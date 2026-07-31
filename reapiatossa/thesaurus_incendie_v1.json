@@ -1,0 +1,3645 @@
+{
+  "meta": {
+    "titre": "Thésaurus contrôlé — correspondance langage commun / langage réglementaire (sécurité incendie)",
+    "version": "1.0.0",
+    "date": "2026-07-30",
+    "perimetre": "ERP (arr. 25/06/1980) — Code du travail 4e partie — Habitation (CCH + arr. 31/01/1986)",
+    "usage": "Ressource d'expansion de requête et de filtrage pour un système de recherche réglementaire. Maintenue par un expert, versionnée, testée. Non apprise par le modèle.",
+    "avertissement": "Les références d'articles sont des POINTS D'ENTRÉE à vérifier dans la version en vigueur. Le champ confiance_reference vaut 'haute' ou 'a_verifier'. Aucune référence de ce fichier ne doit être restituée à un utilisateur final sans validation experte préalable.",
+    "recodifications_a_traiter": [
+      {
+        "corpus": "CCH",
+        "ancien": "R. 111-13 et s.",
+        "nouveau": "R. 142-1 et s.",
+        "depuis": "2021-07-01"
+      },
+      {
+        "corpus": "CCH",
+        "ancien": "R. 123-x",
+        "nouveau": "R. 143-x",
+        "depuis": "2021-07-01"
+      },
+      {
+        "corpus": "CCH",
+        "ancien": "L. 129-8 (DAAF)",
+        "nouveau": "L. 142-2 et s.",
+        "depuis": "2021-07-01"
+      },
+      {
+        "corpus": "CT",
+        "ancien": "R. 232-12 et s.",
+        "nouveau": "R. 4227-1 et s.",
+        "depuis": "2008-05-01"
+      }
+    ],
+    "nb_notions": 96,
+    "nb_assertions_negatives": 20
+  },
+  "niveaux_normativite": {
+    "reglementaire": "Opposable directement (loi, décret, arrêté).",
+    "interpretatif": "Instruction technique, circulaire : précise l'application du règlement.",
+    "normatif": "Norme (NF, EN) : opposable seulement si un texte y renvoie. Sous droits, non reproductible.",
+    "contractuel": "Référentiel assureur (APSAD/CNPP) ou clause de police : force contractuelle, pas réglementaire.",
+    "doctrinal": "Doctrine, jurisprudence, avis de commission : éclaire sans lier.",
+    "usage_professionnel": "Terme de métier absent des textes : à convertir avant toute recherche."
+  },
+  "variables_determinantes": [
+    {
+      "id": "VAR-01",
+      "nom": "corpus",
+      "libelle": "Corpus réglementaire applicable",
+      "type": "enum",
+      "valeurs": [
+        "ERP",
+        "CT",
+        "HAB",
+        "IGH",
+        "ICPE",
+        "DECI"
+      ],
+      "note": "Un même bâtiment peut relever de plusieurs corpus simultanément."
+    },
+    {
+      "id": "VAR-02",
+      "nom": "type_erp",
+      "libelle": "Type d'exploitation ERP",
+      "type": "enum",
+      "valeurs": [
+        "J",
+        "L",
+        "M",
+        "N",
+        "O",
+        "P",
+        "R",
+        "S",
+        "T",
+        "U",
+        "V",
+        "W",
+        "X",
+        "Y",
+        "PA",
+        "CTS",
+        "SG",
+        "PS",
+        "OA",
+        "REF",
+        "GA",
+        "EF"
+      ],
+      "note": ""
+    },
+    {
+      "id": "VAR-03",
+      "nom": "categorie_erp",
+      "libelle": "Catégorie ERP",
+      "type": "enum",
+      "valeurs": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "note": "Déterminée par l'effectif ; conditionne l'essentiel des exigences."
+    },
+    {
+      "id": "VAR-04",
+      "nom": "effectif_public",
+      "libelle": "Effectif théorique du public",
+      "type": "entier",
+      "valeurs": [],
+      "note": "Mode de calcul propre à chaque type (dispositions particulières)."
+    },
+    {
+      "id": "VAR-05",
+      "nom": "effectif_travailleurs",
+      "libelle": "Effectif décompté au sens du code du travail",
+      "type": "entier",
+      "valeurs": [],
+      "note": "Décompte L. 1111-2 ; seuil pivot : plus de 50 personnes."
+    },
+    {
+      "id": "VAR-06",
+      "nom": "famille_habitation",
+      "libelle": "Famille du bâtiment d'habitation",
+      "type": "enum",
+      "valeurs": [
+        "1re",
+        "2e",
+        "3e A",
+        "3e B",
+        "4e"
+      ],
+      "note": ""
+    },
+    {
+      "id": "VAR-07",
+      "nom": "hauteur_plancher_bas",
+      "libelle": "Hauteur du plancher bas du dernier niveau",
+      "type": "metres",
+      "valeurs": [],
+      "note": "Bascule IGH : 50 m en habitation, 28 m pour les autres."
+    },
+    {
+      "id": "VAR-08",
+      "nom": "nb_niveaux",
+      "libelle": "Nombre de niveaux / étages sur rez-de-chaussée",
+      "type": "entier",
+      "valeurs": [],
+      "note": ""
+    },
+    {
+      "id": "VAR-09",
+      "nom": "date_effet",
+      "libelle": "Date de référence (permis, travaux, ou jour)",
+      "type": "date",
+      "valeurs": [],
+      "note": "Détermine la version du texte applicable. Obligatoire sur toute requête."
+    },
+    {
+      "id": "VAR-10",
+      "nom": "existant_ou_neuf",
+      "libelle": "Statut du bâtiment",
+      "type": "enum",
+      "valeurs": [
+        "neuf",
+        "existant",
+        "existant_avec_travaux"
+      ],
+      "note": ""
+    },
+    {
+      "id": "VAR-11",
+      "nom": "niveau_local",
+      "libelle": "Position du local",
+      "type": "enum",
+      "valeurs": [
+        "sous-sol",
+        "rez-de-chaussee",
+        "etage",
+        "dernier_niveau"
+      ],
+      "note": ""
+    },
+    {
+      "id": "VAR-12",
+      "nom": "surface_local",
+      "libelle": "Surface du local",
+      "type": "m2",
+      "valeurs": [],
+      "note": ""
+    },
+    {
+      "id": "VAR-13",
+      "nom": "nature_risque",
+      "libelle": "Nature du risque du local",
+      "type": "enum",
+      "valeurs": [
+        "courant",
+        "risques_moyens",
+        "risques_importants",
+        "ATEX"
+      ],
+      "note": ""
+    },
+    {
+      "id": "VAR-14",
+      "nom": "stade",
+      "libelle": "Stade du projet",
+      "type": "enum",
+      "valeurs": [
+        "conception",
+        "exploitation"
+      ],
+      "note": "Le même sujet est traité dans deux séries d'articles distinctes."
+    },
+    {
+      "id": "VAR-15",
+      "nom": "qualite_demandeur",
+      "libelle": "Qualité du demandeur",
+      "type": "enum",
+      "valeurs": [
+        "maitre_ouvrage",
+        "maitre_oeuvre",
+        "exploitant",
+        "employeur",
+        "proprietaire",
+        "locataire",
+        "gestionnaire"
+      ],
+      "note": ""
+    },
+    {
+      "id": "VAR-16",
+      "nom": "presence_public",
+      "libelle": "Présence de public",
+      "type": "booleen",
+      "valeurs": [],
+      "note": ""
+    },
+    {
+      "id": "VAR-17",
+      "nom": "presence_travailleurs",
+      "libelle": "Présence de travailleurs",
+      "type": "booleen",
+      "valeurs": [],
+      "note": ""
+    }
+  ],
+  "notions": [
+    {
+      "terme_prefere": "type d'exploitation",
+      "definition": "Lettre caractérisant la nature de l'activité d'un ERP et commandant les dispositions particulières applicables.",
+      "synonymes_usage": [
+        "nature de l'activité",
+        "usage du bâtiment",
+        "c'est un magasin / un bureau / une salle"
+      ],
+      "corpus": {
+        "ERP": [
+          "GN 1",
+          "GN 2"
+        ]
+      },
+      "variables_determinantes": [
+        "type_erp",
+        "presence_public"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "conception",
+        "exploitation"
+      ],
+      "profils": [
+        "architecte"
+      ],
+      "note_preventionniste": "Sans type ni catégorie, aucune recherche ERP n'aboutit : presque tout est conditionnel.",
+      "confiance_reference": "a_verifier",
+      "id": "NOT-0001",
+      "theme": "T1 — Classement, champ d'application, seuils"
+    },
+    {
+      "terme_prefere": "catégorie",
+      "definition": "Classe de 1re à 5e déterminée par l'effectif admissible, commandant l'étendue des exigences.",
+      "synonymes_usage": [
+        "quelle catégorie",
+        "je suis en combien",
+        "c'est un petit ERP"
+      ],
+      "faux_amis": [
+        {
+          "terme": "catégorie",
+          "corpus": "ICPE",
+          "note": "chez un dirigeant, désigne souvent un régime ICPE (déclaration/enregistrement/autorisation)"
+        },
+        {
+          "terme": "catégorie",
+          "corpus": "HAB",
+          "note": "en habitation la notion pertinente est la famille, pas la catégorie"
+        }
+      ],
+      "corpus": {
+        "ERP": [
+          "GN 1",
+          "GN 2"
+        ]
+      },
+      "autres_sources": [
+        "CCH R. 143-19 (ex-R. 123-19)"
+      ],
+      "variables_determinantes": [
+        "categorie_erp",
+        "effectif_public"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "conception",
+        "exploitation"
+      ],
+      "profils": [
+        "architecte",
+        "dirigeant"
+      ],
+      "note_preventionniste": "PIÈGE N°1 : faire préciser le corpus avant de chercher le mot « catégorie ».",
+      "confiance_reference": "a_verifier",
+      "id": "NOT-0002",
+      "theme": "T1 — Classement, champ d'application, seuils"
+    },
+    {
+      "terme_prefere": "effectif théorique du public",
+      "definition": "Effectif calculé selon les règles propres à chaque type, servant au classement et au calcul des dégagements.",
+      "synonymes_usage": [
+        "combien de personnes je peux recevoir",
+        "la jauge",
+        "capacité d'accueil"
+      ],
+      "corpus": {
+        "ERP": [
+          "GN 1",
+          "GN 2",
+          "dispositions particulières au type"
+        ]
+      },
+      "variables_determinantes": [
+        "effectif_public",
+        "type_erp"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "conception",
+        "exploitation"
+      ],
+      "profils": [
+        "architecte"
+      ],
+      "note_preventionniste": "Trois modes possibles : déclaration, ratio surfacique, nombre de places. Ne pas confondre avec l'effectif du personnel.",
+      "confiance_reference": "a_verifier",
+      "id": "NOT-0003",
+      "theme": "T1 — Classement, champ d'application, seuils"
+    },
+    {
+      "terme_prefere": "effectif (décompte code du travail)",
+      "definition": "Effectif des travailleurs décompté selon les règles du code du travail, déclenchant certains seuils de prévention.",
+      "synonymes_usage": [
+        "combien de salariés",
+        "mes effectifs",
+        "on est une petite boîte"
+      ],
+      "corpus": {
+        "CT": [
+          "L. 1111-2",
+          "L. 1111-3",
+          "R. 4227-34",
+          "R. 4227-37"
+        ]
+      },
+      "variables_determinantes": [
+        "effectif_travailleurs"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "conception",
+        "exploitation"
+      ],
+      "profils": [
+        "dirigeant"
+      ],
+      "note_preventionniste": "Périmètre différent de l'effectif ERP : intérimaires, alternants et mis à disposition suivent des règles propres.",
+      "confiance_reference": "a_verifier",
+      "id": "NOT-0004",
+      "theme": "T1 — Classement, champ d'application, seuils"
+    },
+    {
+      "terme_prefere": "famille",
+      "definition": "Classe (1re, 2e, 3e A, 3e B, 4e) des bâtiments d'habitation déterminée par le nombre d'étages, la hauteur du plancher bas et l'accès des secours.",
+      "synonymes_usage": [
+        "mon immeuble est en quelle catégorie",
+        "petit collectif",
+        "grande tour"
+      ],
+      "corpus": {
+        "HAB": [
+          "arr. 31/01/1986 art. 3"
+        ]
+      },
+      "variables_determinantes": [
+        "famille_habitation",
+        "nb_niveaux",
+        "hauteur_plancher_bas"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "conception",
+        "exploitation"
+      ],
+      "profils": [
+        "gestionnaire",
+        "architecte"
+      ],
+      "note_preventionniste": "Équivalent fonctionnel de la catégorie ERP. Le gestionnaire dit souvent « catégorie » : reformuler.",
+      "confiance_reference": "haute",
+      "id": "NOT-0005",
+      "theme": "T1 — Classement, champ d'application, seuils"
+    },
+    {
+      "terme_prefere": "groupement d'établissements",
+      "definition": "Ensemble d'établissements de types divers réunis dans un même bâtiment ou juxtaposés, classé et isolé selon des règles propres.",
+      "synonymes_usage": [
+        "centre commercial",
+        "plusieurs activités dans le même bâtiment",
+        "bâtiment mixte"
+      ],
+      "corpus": {
+        "ERP": [
+          "GN 2",
+          "GN 3",
+          "CO 6 à CO 10"
+        ]
+      },
+      "variables_determinantes": [
+        "type_erp",
+        "categorie_erp"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "conception",
+        "exploitation"
+      ],
+      "profils": [
+        "architecte"
+      ],
+      "note_preventionniste": "Ne pas confondre avec l'isolement vis-à-vis des tiers, qui suppose des exploitations sans lien.",
+      "confiance_reference": "a_verifier",
+      "id": "NOT-0006",
+      "theme": "T1 — Classement, champ d'application, seuils"
+    },
+    {
+      "terme_prefere": "tiers contigu ou superposé",
+      "definition": "Occupant distinct, contigu ou superposé, vis-à-vis duquel un degré d'isolement est exigé.",
+      "synonymes_usage": [
+        "le voisin",
+        "mitoyenneté",
+        "le logement au-dessus",
+        "le commerce en pied d'immeuble"
+      ],
+      "corpus": {
+        "ERP": [
+          "CO 6",
+          "CO 7",
+          "CO 8",
+          "CO 9",
+          "CO 10"
+        ],
+        "HAB": [
+          "arr. 31/01/1986 art. 5"
+        ]
+      },
+      "variables_determinantes": [
+        "corpus",
+        "type_erp",
+        "famille_habitation"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "conception",
+        "exploitation"
+      ],
+      "profils": [
+        "architecte",
+        "gestionnaire"
+      ],
+      "note_preventionniste": "L'exigence est renforcée lorsque le tiers relève de l'habitation ou d'une ICPE.",
+      "confiance_reference": "a_verifier",
+      "id": "NOT-0007",
+      "theme": "T1 — Classement, champ d'application, seuils"
+    },
+    {
+      "terme_prefere": "immeuble de grande hauteur",
+      "definition": "Bâtiment dont le plancher bas du dernier niveau dépasse 50 m en habitation, 28 m dans les autres cas, soumis à un régime autonome.",
+      "synonymes_usage": [
+        "tour",
+        "IGH",
+        "immeuble de plus de 28 mètres"
+      ],
+      "corpus": {},
+      "autres_sources": [
+        "CCH L. 146-1 et s.",
+        "CCH R. 146-1 et s.",
+        "arrêté du 30/12/2011"
+      ],
+      "variables_determinantes": [
+        "hauteur_plancher_bas"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "conception",
+        "exploitation"
+      ],
+      "profils": [
+        "architecte",
+        "gestionnaire"
+      ],
+      "note_preventionniste": "Le régime IGH se substitue à l'ERP pour les dispositions générales et impose un service de sécurité permanent.",
+      "confiance_reference": "haute",
+      "id": "NOT-0008",
+      "theme": "T1 — Classement, champ d'application, seuils"
+    },
+    {
+      "terme_prefere": "application aux bâtiments existants",
+      "definition": "Régime déterminant dans quelle mesure les dispositions nouvelles s'appliquent à un bâtiment déjà édifié et ce que déclenchent des travaux.",
+      "synonymes_usage": [
+        "dois-je tout remettre aux normes",
+        "mon bâtiment date de 1985",
+        "grand-père du bâtiment"
+      ],
+      "corpus": {
+        "ERP": [
+          "GN 6",
+          "GN 7",
+          "GN 10"
+        ],
+        "CT": [
+          "R. 4211-1 et s."
+        ],
+        "HAB": [
+          "arr. 31/01/1986 — dispositions transitoires"
+        ]
+      },
+      "variables_determinantes": [
+        "existant_ou_neuf",
+        "date_effet"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "conception",
+        "exploitation"
+      ],
+      "profils": [
+        "architecte",
+        "dirigeant",
+        "gestionnaire"
+      ],
+      "note_preventionniste": "Question systématiquement sous-estimée. La réponse dépend de la date du permis, pas de la date de la demande.",
+      "confiance_reference": "a_verifier",
+      "id": "NOT-0009",
+      "theme": "T1 — Classement, champ d'application, seuils"
+    },
+    {
+      "terme_prefere": "dérogation",
+      "definition": "Autorisation de s'écarter d'une prescription, accordée après avis motivé de la commission de sécurité et assortie de mesures compensatoires.",
+      "synonymes_usage": [
+        "j'ai une dérogation",
+        "on peut y couper",
+        "faire une demande spéciale"
+      ],
+      "corpus": {
+        "ERP": [
+          "GN 4",
+          "GN 5"
+        ]
+      },
+      "autres_sources": [
+        "CCH R. 143-11 (ex-R. 123-13)"
+      ],
+      "variables_determinantes": [
+        "type_erp",
+        "categorie_erp"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "conception",
+        "exploitation"
+      ],
+      "profils": [
+        "architecte"
+      ],
+      "note_preventionniste": "N'existe pas en tant que telle en code du travail : on y raisonne en démonstration d'équivalence du niveau de sécurité.",
+      "confiance_reference": "a_verifier",
+      "id": "NOT-0010",
+      "theme": "T1 — Classement, champ d'application, seuils"
+    },
+    {
+      "terme_prefere": "mesure compensatoire",
+      "definition": "Disposition supplémentaire justifiant qu'un niveau de sécurité équivalent est atteint malgré un écart à la règle.",
+      "synonymes_usage": [
+        "compensation",
+        "mesure de substitution",
+        "solution alternative"
+      ],
+      "corpus": {
+        "ERP": [
+          "GN 4",
+          "GN 5"
+        ]
+      },
+      "variables_determinantes": [
+        "type_erp",
+        "categorie_erp"
+      ],
+      "niveau_normativite": "doctrinal",
+      "stade": [
+        "conception",
+        "exploitation"
+      ],
+      "profils": [
+        "architecte"
+      ],
+      "note_preventionniste": "Le contenu relève de l'appréciation de la commission : le système doit orienter, pas trancher.",
+      "confiance_reference": "a_verifier",
+      "id": "NOT-0011",
+      "theme": "T1 — Classement, champ d'application, seuils"
+    },
+    {
+      "terme_prefere": "installation classée pour la protection de l'environnement",
+      "definition": "Régime distinct s'appliquant aux activités et stockages dépassant les seuils de la nomenclature.",
+      "synonymes_usage": [
+        "ICPE",
+        "rubrique 1510",
+        "on est classé",
+        "arrêté préfectoral"
+      ],
+      "corpus": {},
+      "autres_sources": [
+        "Code de l'environnement L. 511-1 et s.",
+        "nomenclature ICPE"
+      ],
+      "variables_determinantes": [
+        "nature_risque"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "conception",
+        "exploitation"
+      ],
+      "profils": [
+        "dirigeant",
+        "gestionnaire"
+      ],
+      "note_preventionniste": "En cas de concurrence avec le code du travail, la disposition la plus contraignante s'applique.",
+      "confiance_reference": "a_verifier",
+      "id": "NOT-0012",
+      "theme": "T1 — Classement, champ d'application, seuils"
+    },
+    {
+      "terme_prefere": "voie engin",
+      "definition": "Voie utilisable par les engins de secours, définie par des caractéristiques de largeur, force portante, pente et rayon de giration.",
+      "synonymes_usage": [
+        "accès pompiers",
+        "voie pompier",
+        "la route pour les camions"
+      ],
+      "corpus": {
+        "ERP": [
+          "CO 2",
+          "CO 3",
+          "CO 5"
+        ],
+        "HAB": [
+          "arr. 31/01/1986 art. 4"
+        ]
+      },
+      "variables_determinantes": [
+        "type_erp",
+        "categorie_erp",
+        "famille_habitation"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "conception",
+        "exploitation"
+      ],
+      "profils": [
+        "architecte",
+        "gestionnaire"
+      ],
+      "confiance_reference": "haute",
+      "id": "NOT-0013",
+      "theme": "T2 — Accès des secours, implantation, façades"
+    },
+    {
+      "terme_prefere": "voie échelle",
+      "definition": "Section de voie engin permettant la mise en station des moyens élévateurs aériens.",
+      "synonymes_usage": [
+        "accès grande échelle",
+        "emplacement pour la nacelle"
+      ],
+      "corpus": {
+        "ERP": [
+          "CO 2",
+          "CO 4",
+          "CO 5"
+        ],
+        "HAB": [
+          "arr. 31/01/1986 art. 4"
+        ]
+      },
+      "variables_determinantes": [
+        "hauteur_plancher_bas",
+        "famille_habitation"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "conception",
+        "exploitation"
+      ],
+      "profils": [
+        "architecte",
+        "gestionnaire"
+      ],
+      "confiance_reference": "a_verifier",
+      "id": "NOT-0014",
+      "theme": "T2 — Accès des secours, implantation, façades"
+    },
+    {
+      "terme_prefere": "espace libre",
+      "definition": "Espace permettant l'accès et la mise en œuvre des moyens de secours à défaut de voie engin.",
+      "synonymes_usage": [
+        "dégagement extérieur",
+        "la cour"
+      ],
+      "corpus": {
+        "ERP": [
+          "CO 2"
+        ]
+      },
+      "variables_determinantes": [
+        "type_erp"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "conception",
+        "exploitation"
+      ],
+      "profils": [
+        "architecte"
+      ],
+      "confiance_reference": "a_verifier",
+      "id": "NOT-0015",
+      "theme": "T2 — Accès des secours, implantation, façades"
+    },
+    {
+      "terme_prefere": "façade accessible",
+      "definition": "Façade permettant aux services de secours d'accéder à tous les niveaux par des baies répondant à des caractéristiques définies.",
+      "synonymes_usage": [
+        "façade pompier",
+        "combien de côtés accessibles"
+      ],
+      "corpus": {
+        "ERP": [
+          "CO 2",
+          "CO 3"
+        ],
+        "HAB": [
+          "arr. 31/01/1986 art. 4"
+        ]
+      },
+      "variables_determinantes": [
+        "categorie_erp",
+        "famille_habitation"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "conception",
+        "exploitation"
+      ],
+      "profils": [
+        "architecte"
+      ],
+      "confiance_reference": "a_verifier",
+      "id": "NOT-0016",
+      "theme": "T2 — Accès des secours, implantation, façades"
+    },
+    {
+      "terme_prefere": "défense extérieure contre l'incendie",
+      "definition": "Ensemble des points d'eau incendie destinés à l'alimentation des moyens de lutte, dimensionné au niveau départemental.",
+      "synonymes_usage": [
+        "poteau incendie",
+        "borne à incendie",
+        "la bouche dans la rue",
+        "DECI",
+        "besoins en eau"
+      ],
+      "corpus": {},
+      "autres_sources": [
+        "CGCT L. 2225-1 et s.",
+        "CGCT R. 2225-1 et s.",
+        "RDDECI départemental"
+      ],
+      "variables_determinantes": [
+        "nature_risque",
+        "surface_local"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "conception",
+        "exploitation"
+      ],
+      "profils": [
+        "architecte",
+        "dirigeant"
+      ],
+      "note_preventionniste": "Ne pas chercher dans l'arrêté de 1980 : la règle est départementale et varie d'un département à l'autre.",
+      "confiance_reference": "haute",
+      "id": "NOT-0017",
+      "theme": "T2 — Accès des secours, implantation, façades"
+    },
+    {
+      "terme_prefere": "propagation du feu par les façades",
+      "definition": "Règles limitant la transmission du feu d'un niveau à l'autre par la façade, notamment par la règle C + D.",
+      "synonymes_usage": [
+        "C+D",
+        "règle du C plus D",
+        "le feu qui monte par la façade"
+      ],
+      "corpus": {
+        "ERP": [
+          "CO 19",
+          "CO 20",
+          "CO 21",
+          "CO 22"
+        ],
+        "HAB": [
+          "arr. 31/01/1986"
+        ]
+      },
+      "autres_sources": [
+        "instruction technique n° 249"
+      ],
+      "variables_determinantes": [
+        "type_erp",
+        "famille_habitation"
+      ],
+      "niveau_normativite": "interpretatif",
+      "stade": [
+        "conception",
+        "exploitation"
+      ],
+      "profils": [
+        "architecte",
+        "gestionnaire"
+      ],
+      "confiance_reference": "a_verifier",
+      "id": "NOT-0018",
+      "theme": "T2 — Accès des secours, implantation, façades"
+    },
+    {
+      "terme_prefere": "système d'isolation thermique par l'extérieur",
+      "definition": "Complexe d'isolation rapporté en façade, soumis à des règles de recoupement de lame d'air et de protection des baies lorsque l'isolant est combustible.",
+      "synonymes_usage": [
+        "ITE",
+        "isolation par l'extérieur",
+        "on met de l'isolant sur la façade",
+        "rénovation énergétique"
+      ],
+      "corpus": {},
+      "autres_sources": [
+        "instruction technique n° 249",
+        "guides de préconisations ITE"
+      ],
+      "variables_determinantes": [
+        "famille_habitation",
+        "type_erp"
+      ],
+      "niveau_normativite": "interpretatif",
+      "stade": [
+        "conception",
+        "exploitation"
+      ],
+      "profils": [
+        "architecte",
+        "gestionnaire"
+      ],
+      "note_preventionniste": "Point de friction majeur entre performance énergétique et sécurité incendie en réhabilitation.",
+      "confiance_reference": "a_verifier",
+      "id": "NOT-0019",
+      "theme": "T2 — Accès des secours, implantation, façades"
+    },
+    {
+      "terme_prefere": "résistance au feu",
+      "definition": "Aptitude d'un élément à conserver pendant une durée déterminée sa capacité portante (R), son étanchéité (E) et son isolation thermique (I).",
+      "synonymes_usage": [
+        "coupe-feu",
+        "CF 1 heure",
+        "pare-flamme",
+        "PF 1/2 heure",
+        "tenue au feu",
+        "degré coupe-feu"
+      ],
+      "termes_obsoletes": [
+        {
+          "terme": "CF (coupe-feu)",
+          "remplace_par": "EI ou REI",
+          "depuis": "2004-03-22"
+        },
+        {
+          "terme": "PF (pare-flamme)",
+          "remplace_par": "E ou EI partiel",
+          "depuis": "2004-03-22"
+        },
+        {
+          "terme": "SF (stabilité au feu)",
+          "remplace_par": "R",
+          "depuis": "2004-03-22"
+        }
+      ],
+      "corpus": {
+        "ERP": [
+          "CO 11",
+          "CO 12"
+        ],
+        "CT": [
+          "R. 4216-1 et s."
+        ],
+        "HAB": [
+          "arr. 31/01/1986 art. 7 et s."
+        ]
+      },
+      "autres_sources": [
+        "arrêté du 22/03/2004"
+      ],
+      "variables_determinantes": [
+        "categorie_erp",
+        "famille_habitation",
+        "hauteur_plancher_bas"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "conception",
+        "exploitation"
+      ],
+      "profils": [
+        "architecte",
+        "dirigeant",
+        "gestionnaire"
+      ],
+      "note_preventionniste": "PIÈGE N°2 : « coupe-feu » ne figure plus dans les textes postérieurs à 2004 mais reste employé par tous. Chercher EI / REI.",
+      "confiance_reference": "haute",
+      "id": "NOT-0020",
+      "theme": "T3 — Structure, compartimentage, comportement au feu"
+    },
+    {
+      "terme_prefere": "stabilité au feu des structures",
+      "definition": "Durée pendant laquelle les éléments porteurs conservent leur capacité portante en situation d'incendie.",
+      "synonymes_usage": [
+        "SF 1 heure",
+        "tenue de la charpente",
+        "est-ce que ça tient"
+      ],
+      "termes_obsoletes": [
+        {
+          "terme": "SF",
+          "remplace_par": "R",
+          "depuis": "2004-03-22"
+        }
+      ],
+      "corpus": {
+        "ERP": [
+          "CO 12"
+        ],
+        "CT": [
+          "R. 4216-1 et s."
+        ],
+        "HAB": [
+          "arr. 31/01/1986 art. 7 et s."
+        ]
+      },
+      "variables_determinantes": [
+        "categorie_erp",
+        "hauteur_plancher_bas",
+        "nb_niveaux"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "conception",
+        "exploitation"
+      ],
+      "profils": [
+        "architecte",
+        "dirigeant"
+      ],
+      "note_preventionniste": "En code du travail, l'exigence de stabilité est ténue pour les bâtiments industriels : vérifier si elle procède plutôt de l'ICPE ou du contrat d'assurance.",
+      "confiance_reference": "a_verifier",
+      "id": "NOT-0021",
+      "theme": "T3 — Structure, compartimentage, comportement au feu"
+    },
+    {
+      "terme_prefere": "procès-verbal de classement",
+      "definition": "Document délivré par un laboratoire agréé attestant du classement de réaction ou de résistance au feu d'un produit ou d'un ouvrage.",
+      "synonymes_usage": [
+        "PV feu",
+        "certificat",
+        "fiche technique",
+        "attestation du fabricant",
+        "le doc du fournisseur"
+      ],
+      "corpus": {},
+      "autres_sources": [
+        "arrêté du 21/11/2002",
+        "arrêté du 22/03/2004"
+      ],
+      "variables_determinantes": [
+        "date_effet"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "conception",
+        "exploitation"
+      ],
+      "profils": [
+        "architecte",
+        "dirigeant",
+        "gestionnaire"
+      ],
+      "note_preventionniste": "Vérifier la validité, le domaine d'emploi et la mise en œuvre couverte : un PV hors domaine ne vaut rien.",
+      "confiance_reference": "a_verifier",
+      "id": "NOT-0022",
+      "theme": "T3 — Structure, compartimentage, comportement au feu"
+    },
+    {
+      "terme_prefere": "réaction au feu",
+      "definition": "Aliment que constitue un matériau pour le développement du feu, exprimé par les euroclasses.",
+      "synonymes_usage": [
+        "M0",
+        "M1",
+        "classement au feu du revêtement",
+        "matériau ininflammable",
+        "A2-s1,d0",
+        "Bfl-s1"
+      ],
+      "termes_obsoletes": [
+        {
+          "terme": "M0 à M4",
+          "remplace_par": "euroclasses A1 à F",
+          "depuis": "2002-11-21"
+        }
+      ],
+      "corpus": {
+        "ERP": [
+          "AM 1 à AM 8"
+        ],
+        "CT": [
+          "R. 4216-1 et s."
+        ],
+        "HAB": [
+          "arr. 31/01/1986"
+        ]
+      },
+      "autres_sources": [
+        "arrêté du 21/11/2002"
+      ],
+      "variables_determinantes": [
+        "type_erp",
+        "niveau_local"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "conception",
+        "exploitation"
+      ],
+      "profils": [
+        "architecte"
+      ],
+      "note_preventionniste": "Les classements M subsistent dans les documents anciens ; la table de correspondance figure à l'arrêté du 21/11/2002.",
+      "confiance_reference": "haute",
+      "id": "NOT-0023",
+      "theme": "T3 — Structure, compartimentage, comportement au feu"
+    },
+    {
+      "terme_prefere": "local à risques particuliers",
+      "definition": "Local classé à risques moyens ou importants en raison de son contenu ou de son activité, soumis à des exigences d'isolement renforcées.",
+      "synonymes_usage": [
+        "local technique",
+        "local à risque",
+        "la chaufferie",
+        "le local archives",
+        "réserve"
+      ],
+      "faux_amis": [
+        {
+          "terme": "local à risques particuliers",
+          "corpus": "CT",
+          "note": "le code du travail parle de locaux présentant des risques particuliers d'incendie ou d'explosion : périmètre et conséquences distincts"
+        }
+      ],
+      "corpus": {
+        "ERP": [
+          "CO 27",
+          "CO 28"
+        ],
+        "CT": [
+          "R. 4216-1 et s.",
+          "R. 4227-22 et s."
+        ]
+      },
+      "variables_determinantes": [
+        "nature_risque",
+        "surface_local"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "conception",
+        "exploitation"
+      ],
+      "profils": [
+        "architecte",
+        "dirigeant"
+      ],
+      "confiance_reference": "haute",
+      "id": "NOT-0024",
+      "theme": "T3 — Structure, compartimentage, comportement au feu"
+    },
+    {
+      "terme_prefere": "calfeutrement de traversée",
+      "definition": "Rétablissement du degré coupe-feu d'une paroi traversée par un conduit, un câble ou une canalisation.",
+      "synonymes_usage": [
+        "rebouchage",
+        "on a percé la dalle",
+        "passage de câbles",
+        "trou dans le mur"
+      ],
+      "corpus": {
+        "ERP": [
+          "CO 30",
+          "CO 31",
+          "CO 32",
+          "CO 33"
+        ],
+        "HAB": [
+          "arr. 31/01/1986 art. 25 et s."
+        ]
+      },
+      "variables_determinantes": [
+        "corpus"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "conception",
+        "exploitation"
+      ],
+      "profils": [
+        "architecte",
+        "gestionnaire"
+      ],
+      "note_preventionniste": "Défaut le plus fréquent en patrimoine existant, généré par les passages successifs de réseaux.",
+      "confiance_reference": "a_verifier",
+      "id": "NOT-0025",
+      "theme": "T3 — Structure, compartimentage, comportement au feu"
+    },
+    {
+      "terme_prefere": "clapet coupe-feu",
+      "definition": "Dispositif d'obturation automatique rétablissant le degré coupe-feu d'une paroi traversée par un conduit aéraulique.",
+      "synonymes_usage": [
+        "clapet",
+        "volet coupe-feu",
+        "trappe dans la gaine"
+      ],
+      "corpus": {
+        "ERP": [
+          "CO 31"
+        ]
+      },
+      "autres_sources": [
+        "instruction technique n° 246"
+      ],
+      "variables_determinantes": [
+        "corpus"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "conception",
+        "exploitation"
+      ],
+      "profils": [
+        "architecte",
+        "dirigeant",
+        "gestionnaire"
+      ],
+      "confiance_reference": "a_verifier",
+      "id": "NOT-0026",
+      "theme": "T3 — Structure, compartimentage, comportement au feu"
+    },
+    {
+      "terme_prefere": "gaine technique",
+      "definition": "Volume vertical ou horizontal contenant des conduits ou des réseaux, soumis à des règles de recoupement.",
+      "synonymes_usage": [
+        "gaine",
+        "trémie",
+        "colonne montante",
+        "le vide technique"
+      ],
+      "corpus": {
+        "ERP": [
+          "CO 30 à CO 33"
+        ],
+        "HAB": [
+          "arr. 31/01/1986 art. 25 et s."
+        ]
+      },
+      "variables_determinantes": [
+        "corpus",
+        "famille_habitation"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "conception",
+        "exploitation"
+      ],
+      "profils": [
+        "architecte",
+        "gestionnaire"
+      ],
+      "confiance_reference": "a_verifier",
+      "id": "NOT-0027",
+      "theme": "T3 — Structure, compartimentage, comportement au feu"
+    },
+    {
+      "terme_prefere": "plafond suspendu",
+      "definition": "Plafond rapporté créant un plénum, soumis à des exigences de réaction au feu et de recoupement des vides.",
+      "synonymes_usage": [
+        "faux plafond",
+        "plénum",
+        "le vide au-dessus des dalles"
+      ],
+      "corpus": {
+        "ERP": [
+          "AM 4"
+        ],
+        "CT": [
+          "R. 4216-1 et s."
+        ]
+      },
+      "variables_determinantes": [
+        "surface_local"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "conception",
+        "exploitation"
+      ],
+      "profils": [
+        "architecte",
+        "dirigeant"
+      ],
+      "confiance_reference": "a_verifier",
+      "id": "NOT-0028",
+      "theme": "T3 — Structure, compartimentage, comportement au feu"
+    },
+    {
+      "terme_prefere": "cloisonnement traditionnel",
+      "definition": "Mode de distribution intérieure fondé sur des locaux et circulations recoupés, par opposition aux secteurs et compartiments.",
+      "synonymes_usage": [
+        "recoupement",
+        "cloisonnement",
+        "découper en zones"
+      ],
+      "corpus": {
+        "ERP": [
+          "CO 24",
+          "CO 25",
+          "CO 26"
+        ]
+      },
+      "variables_determinantes": [
+        "type_erp",
+        "categorie_erp"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "conception",
+        "exploitation"
+      ],
+      "profils": [
+        "architecte"
+      ],
+      "confiance_reference": "a_verifier",
+      "id": "NOT-0029",
+      "theme": "T3 — Structure, compartimentage, comportement au feu"
+    },
+    {
+      "terme_prefere": "secteur",
+      "definition": "Mode de distribution alternatif au cloisonnement traditionnel, fondé sur des volumes séparés par des parois coupe-feu et des dispositifs particuliers.",
+      "synonymes_usage": [
+        "grande surface sans cloisons",
+        "zone"
+      ],
+      "corpus": {
+        "ERP": [
+          "CO 24",
+          "CO 25"
+        ]
+      },
+      "variables_determinantes": [
+        "type_erp",
+        "categorie_erp"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "conception",
+        "exploitation"
+      ],
+      "profils": [
+        "architecte"
+      ],
+      "confiance_reference": "a_verifier",
+      "id": "NOT-0030",
+      "theme": "T3 — Structure, compartimentage, comportement au feu"
+    },
+    {
+      "terme_prefere": "compartiment",
+      "definition": "Volume délimité par des parois coupe-feu au sein duquel l'évacuation est différée, admis dans certaines configurations.",
+      "synonymes_usage": [
+        "évacuation horizontale",
+        "transfert latéral"
+      ],
+      "corpus": {
+        "ERP": [
+          "CO 24",
+          "CO 25"
+        ]
+      },
+      "variables_determinantes": [
+        "type_erp",
+        "categorie_erp"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "conception",
+        "exploitation"
+      ],
+      "profils": [
+        "architecte"
+      ],
+      "confiance_reference": "a_verifier",
+      "id": "NOT-0031",
+      "theme": "T3 — Structure, compartimentage, comportement au feu"
+    },
+    {
+      "terme_prefere": "volume libre intérieur",
+      "definition": "Volume intéressant plusieurs niveaux, soumis à des dispositions particulières de désenfumage et d'évacuation.",
+      "synonymes_usage": [
+        "atrium",
+        "patio couvert",
+        "vide sur plusieurs étages",
+        "mezzanine ouverte"
+      ],
+      "corpus": {
+        "ERP": [
+          "CO 24 à CO 26"
+        ]
+      },
+      "autres_sources": [
+        "instruction technique n° 263"
+      ],
+      "variables_determinantes": [
+        "type_erp",
+        "categorie_erp",
+        "nb_niveaux"
+      ],
+      "niveau_normativite": "interpretatif",
+      "stade": [
+        "conception",
+        "exploitation"
+      ],
+      "profils": [
+        "architecte"
+      ],
+      "confiance_reference": "a_verifier",
+      "id": "NOT-0032",
+      "theme": "T3 — Structure, compartimentage, comportement au feu"
+    },
+    {
+      "terme_prefere": "bloc-porte palier",
+      "definition": "Porte séparant un logement de la circulation commune, présentant un degré pare-flamme selon la famille.",
+      "synonymes_usage": [
+        "porte palière",
+        "porte d'entrée du logement",
+        "la porte du locataire"
+      ],
+      "corpus": {
+        "HAB": [
+          "arr. 31/01/1986 art. 11",
+          "arr. 31/01/1986 art. 27",
+          "arr. 31/01/1986 art. 32"
+        ]
+      },
+      "variables_determinantes": [
+        "famille_habitation"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "conception",
+        "exploitation"
+      ],
+      "profils": [
+        "gestionnaire"
+      ],
+      "note_preventionniste": "Le remplacement par l'occupant d'un bloc-porte classé par un modèle du commerce est un point de contrôle récurrent.",
+      "confiance_reference": "a_verifier",
+      "id": "NOT-0033",
+      "theme": "T3 — Structure, compartimentage, comportement au feu"
+    },
+    {
+      "terme_prefere": "dégagement",
+      "definition": "Toute partie de la construction permettant le cheminement d'évacuation des occupants : porte, circulation, escalier, sortie.",
+      "synonymes_usage": [
+        "issue de secours",
+        "sortie de secours",
+        "porte de secours",
+        "les issues",
+        "la sortie"
+      ],
+      "corpus": {
+        "ERP": [
+          "CO 34",
+          "CO 35",
+          "CO 36",
+          "CO 38",
+          "CO 43"
+        ],
+        "CT": [
+          "R. 4216-6 et s.",
+          "R. 4227-1",
+          "R. 4227-4"
+        ],
+        "HAB": [
+          "arr. 31/01/1986 art. 26 et s."
+        ]
+      },
+      "variables_determinantes": [
+        "effectif_public",
+        "effectif_travailleurs",
+        "categorie_erp"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "conception",
+        "exploitation"
+      ],
+      "profils": [
+        "architecte",
+        "dirigeant",
+        "gestionnaire"
+      ],
+      "note_preventionniste": "PIÈGE N°3 : « issue de secours » est un terme de chantier absent du règlement. Chercher « dégagement » ramène la règle ; « issue de secours » ne ramène que de la signalisation.",
+      "confiance_reference": "haute",
+      "id": "NOT-0034",
+      "theme": "T4 — Dégagements et évacuation"
+    },
+    {
+      "terme_prefere": "unité de passage",
+      "definition": "Unité de largeur servant au dimensionnement des dégagements.",
+      "synonymes_usage": [
+        "UP",
+        "largeur de porte",
+        "combien de centimètres"
+      ],
+      "corpus": {
+        "ERP": [
+          "CO 36",
+          "CO 38"
+        ],
+        "CT": [
+          "R. 4216-8"
+        ]
+      },
+      "variables_determinantes": [
+        "effectif_public",
+        "effectif_travailleurs"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "conception",
+        "exploitation"
+      ],
+      "profils": [
+        "architecte",
+        "dirigeant"
+      ],
+      "confiance_reference": "haute",
+      "id": "NOT-0035",
+      "theme": "T4 — Dégagements et évacuation"
+    },
+    {
+      "terme_prefere": "dégagement accessoire",
+      "definition": "Dégagement compensant une insuffisance des dégagements normaux, comptabilisé de façon limitée.",
+      "synonymes_usage": [
+        "sortie de secours en plus",
+        "la petite porte du fond"
+      ],
+      "corpus": {
+        "ERP": [
+          "CO 34",
+          "CO 39",
+          "CO 41"
+        ]
+      },
+      "variables_determinantes": [
+        "effectif_public"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "conception",
+        "exploitation"
+      ],
+      "profils": [
+        "architecte"
+      ],
+      "note_preventionniste": "Ne pas confondre avec le dégagement supplémentaire ni avec le dégagement de secours.",
+      "confiance_reference": "a_verifier",
+      "id": "NOT-0036",
+      "theme": "T4 — Dégagements et évacuation"
+    },
+    {
+      "terme_prefere": "circulation horizontale",
+      "definition": "Cheminement horizontal d'évacuation, éventuellement encloisonné et desservant les dégagements.",
+      "synonymes_usage": [
+        "couloir",
+        "coursive",
+        "le hall",
+        "circulation"
+      ],
+      "faux_amis": [
+        {
+          "terme": "circulation horizontale commune",
+          "corpus": "HAB",
+          "note": "en habitation, la notion est indissociable du régime des parties communes"
+        }
+      ],
+      "corpus": {
+        "ERP": [
+          "CO 34",
+          "CO 44"
+        ],
+        "HAB": [
+          "arr. 31/01/1986 art. 26 et s."
+        ]
+      },
+      "variables_determinantes": [
+        "corpus",
+        "famille_habitation"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "conception",
+        "exploitation"
+      ],
+      "profils": [
+        "architecte",
+        "gestionnaire"
+      ],
+      "confiance_reference": "a_verifier",
+      "id": "NOT-0037",
+      "theme": "T4 — Dégagements et évacuation"
+    },
+    {
+      "terme_prefere": "escalier encloisonné",
+      "definition": "Escalier isolé du reste de la construction par des parois coupe-feu et un dispositif de fermeture.",
+      "synonymes_usage": [
+        "cage d'escalier",
+        "escalier fermé",
+        "l'escalier"
+      ],
+      "corpus": {
+        "ERP": [
+          "CO 50",
+          "CO 51",
+          "CO 52",
+          "CO 53",
+          "CO 55"
+        ],
+        "HAB": [
+          "arr. 31/01/1986 art. 27 et s."
+        ]
+      },
+      "variables_determinantes": [
+        "categorie_erp",
+        "famille_habitation"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "conception",
+        "exploitation"
+      ],
+      "profils": [
+        "architecte",
+        "gestionnaire"
+      ],
+      "confiance_reference": "haute",
+      "id": "NOT-0038",
+      "theme": "T4 — Dégagements et évacuation"
+    },
+    {
+      "terme_prefere": "escalier à l'air libre",
+      "definition": "Escalier dont une paroi comporte des vides suffisants sur l'extérieur, dispensé d'encloisonnement.",
+      "synonymes_usage": [
+        "escalier extérieur",
+        "escalier ouvert"
+      ],
+      "corpus": {
+        "ERP": [
+          "CO 52"
+        ],
+        "HAB": [
+          "arr. 31/01/1986 art. 27 et s."
+        ]
+      },
+      "variables_determinantes": [
+        "famille_habitation",
+        "categorie_erp"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "conception",
+        "exploitation"
+      ],
+      "profils": [
+        "architecte",
+        "gestionnaire"
+      ],
+      "confiance_reference": "a_verifier",
+      "id": "NOT-0039",
+      "theme": "T4 — Dégagements et évacuation"
+    },
+    {
+      "terme_prefere": "escalier unique",
+      "definition": "Configuration de desserte par un seul escalier, admise sous conditions d'effectif, de hauteur et de mesures compensatoires.",
+      "synonymes_usage": [
+        "un seul escalier",
+        "il n'y a qu'une cage"
+      ],
+      "corpus": {
+        "ERP": [
+          "CO 39",
+          "CO 40"
+        ],
+        "HAB": [
+          "arr. 31/01/1986 art. 27 et s."
+        ]
+      },
+      "variables_determinantes": [
+        "categorie_erp",
+        "famille_habitation",
+        "nb_niveaux"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "conception",
+        "exploitation"
+      ],
+      "profils": [
+        "architecte",
+        "gestionnaire"
+      ],
+      "confiance_reference": "a_verifier",
+      "id": "NOT-0040",
+      "theme": "T4 — Dégagements et évacuation"
+    },
+    {
+      "terme_prefere": "distance à parcourir",
+      "definition": "Longueur du cheminement mesurée suivant l'axe des circulations jusqu'à une sortie ou un escalier protégé.",
+      "synonymes_usage": [
+        "distance de fuite",
+        "à quelle distance de la sortie",
+        "combien de mètres"
+      ],
+      "corpus": {
+        "ERP": [
+          "CO 43"
+        ],
+        "CT": [
+          "R. 4216-6 et s."
+        ],
+        "HAB": [
+          "arr. 31/01/1986 art. 12"
+        ]
+      },
+      "variables_determinantes": [
+        "corpus",
+        "niveau_local"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "conception",
+        "exploitation"
+      ],
+      "profils": [
+        "architecte",
+        "dirigeant"
+      ],
+      "confiance_reference": "haute",
+      "id": "NOT-0041",
+      "theme": "T4 — Dégagements et évacuation"
+    },
+    {
+      "terme_prefere": "sens d'ouverture des portes",
+      "definition": "Règle imposant, au-delà d'un effectif donné, l'ouverture des portes dans le sens de l'évacuation.",
+      "synonymes_usage": [
+        "porte qui s'ouvre vers l'extérieur",
+        "sens de la porte"
+      ],
+      "corpus": {
+        "ERP": [
+          "CO 45"
+        ],
+        "CT": [
+          "R. 4227-1 et s."
+        ]
+      },
+      "variables_determinantes": [
+        "effectif_public",
+        "effectif_travailleurs"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "conception",
+        "exploitation"
+      ],
+      "profils": [
+        "architecte",
+        "dirigeant"
+      ],
+      "confiance_reference": "haute",
+      "id": "NOT-0042",
+      "theme": "T4 — Dégagements et évacuation"
+    },
+    {
+      "terme_prefere": "verrouillage des issues",
+      "definition": "Régime des dispositifs de condamnation ou de contrôle d'accès équipant une porte de sortie de secours.",
+      "synonymes_usage": [
+        "porte fermée à clé",
+        "contrôle d'accès",
+        "j'ai verrouillé pour le vol",
+        "barre anti-panique",
+        "digicode sur la sortie"
+      ],
+      "corpus": {
+        "ERP": [
+          "CO 46"
+        ],
+        "CT": [
+          "R. 4227-4",
+          "R. 4227-5"
+        ]
+      },
+      "variables_determinantes": [
+        "corpus",
+        "effectif_public"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "conception",
+        "exploitation"
+      ],
+      "profils": [
+        "architecte",
+        "dirigeant",
+        "gestionnaire"
+      ],
+      "note_preventionniste": "Conflit récurrent entre sûreté et sécurité : la réponse est technique (dispositif admis), pas organisationnelle.",
+      "confiance_reference": "haute",
+      "id": "NOT-0043",
+      "theme": "T4 — Dégagements et évacuation"
+    },
+    {
+      "terme_prefere": "maintien des dégagements libres",
+      "definition": "Obligation permanente de laisser les dégagements exempts de tout obstacle et de tout dépôt.",
+      "synonymes_usage": [
+        "on stocke dans le couloir",
+        "encombrement",
+        "les poussettes dans le hall",
+        "les vélos dans l'escalier",
+        "cartons devant la porte"
+      ],
+      "corpus": {
+        "ERP": [
+          "CO 36"
+        ],
+        "CT": [
+          "R. 4227-4",
+          "R. 4227-11"
+        ],
+        "HAB": [
+          "arr. 31/01/1986"
+        ]
+      },
+      "autres_sources": [
+        "règlement sanitaire départemental"
+      ],
+      "variables_determinantes": [
+        "corpus"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "exploitation"
+      ],
+      "profils": [
+        "dirigeant",
+        "gestionnaire"
+      ],
+      "note_preventionniste": "En habitation, le fondement est contractuel et sanitaire davantage que constructif.",
+      "confiance_reference": "haute",
+      "id": "NOT-0044",
+      "theme": "T4 — Dégagements et évacuation"
+    },
+    {
+      "terme_prefere": "lieu sûr",
+      "definition": "Endroit où les personnes évacuées sont à l'abri des effets de l'incendie.",
+      "synonymes_usage": [
+        "point de rassemblement",
+        "où on se retrouve dehors",
+        "zone de regroupement"
+      ],
+      "corpus": {
+        "CT": [
+          "R. 4227-1"
+        ]
+      },
+      "variables_determinantes": [
+        "effectif_travailleurs"
+      ],
+      "niveau_normativite": "usage_professionnel",
+      "stade": [
+        "exploitation"
+      ],
+      "profils": [
+        "dirigeant"
+      ],
+      "note_preventionniste": "« Point de rassemblement » n'est pas un terme réglementaire : sa désignation relève de la consigne de sécurité incendie.",
+      "confiance_reference": "a_verifier",
+      "id": "NOT-0045",
+      "theme": "T4 — Dégagements et évacuation"
+    },
+    {
+      "terme_prefere": "espace d'attente sécurisé",
+      "definition": "Zone protégée permettant à une personne ne pouvant évacuer d'attendre l'intervention des secours.",
+      "synonymes_usage": [
+        "EAS",
+        "zone refuge",
+        "local pour les PMR",
+        "où mettre les personnes handicapées"
+      ],
+      "corpus": {
+        "ERP": [
+          "CO 57",
+          "CO 58",
+          "CO 59",
+          "CO 60"
+        ],
+        "CT": [
+          "R. 4216-2-1",
+          "R. 4214-26",
+          "R. 4214-27",
+          "R. 4214-28"
+        ]
+      },
+      "variables_determinantes": [
+        "categorie_erp",
+        "nb_niveaux"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "conception",
+        "exploitation"
+      ],
+      "profils": [
+        "architecte",
+        "dirigeant"
+      ],
+      "note_preventionniste": "Notion absente du corpus habitation : ne pas la transposer aux logements.",
+      "confiance_reference": "haute",
+      "id": "NOT-0046",
+      "theme": "T4 — Dégagements et évacuation"
+    },
+    {
+      "terme_prefere": "évacuation différée",
+      "definition": "Mode d'évacuation reportant la mise à l'abri définitive de certains occupants, organisé par les consignes.",
+      "synonymes_usage": [
+        "on ne fait pas sortir tout le monde",
+        "mise à l'abri",
+        "évacuation par phases"
+      ],
+      "corpus": {
+        "ERP": [
+          "CO 57 à CO 60"
+        ],
+        "CT": [
+          "R. 4227-37",
+          "R. 4227-38"
+        ]
+      },
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "exploitation"
+      ],
+      "profils": [
+        "architecte",
+        "dirigeant"
+      ],
+      "confiance_reference": "a_verifier",
+      "id": "NOT-0047",
+      "theme": "T4 — Dégagements et évacuation"
+    },
+    {
+      "terme_prefere": "désenfumage",
+      "definition": "Extraction des fumées et gaz de combustion destinée à maintenir praticables les cheminements d'évacuation.",
+      "synonymes_usage": [
+        "évacuation des fumées",
+        "trappe de fumée",
+        "les fumées",
+        "extraction"
+      ],
+      "corpus": {
+        "ERP": [
+          "DF 1 à DF 10"
+        ],
+        "CT": [
+          "R. 4216-13",
+          "R. 4216-14",
+          "R. 4216-15"
+        ],
+        "HAB": [
+          "arr. 31/01/1986 art. 30 et s."
+        ]
+      },
+      "autres_sources": [
+        "instruction technique n° 246",
+        "arrêté du 05/08/1992"
+      ],
+      "variables_determinantes": [
+        "corpus",
+        "surface_local",
+        "niveau_local"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "conception",
+        "exploitation"
+      ],
+      "profils": [
+        "architecte",
+        "dirigeant",
+        "gestionnaire"
+      ],
+      "confiance_reference": "haute",
+      "id": "NOT-0048",
+      "theme": "T5 — Désenfumage et ventilation"
+    },
+    {
+      "terme_prefere": "dispositif d'évacuation naturelle de fumées et de chaleur",
+      "definition": "Ouvrant en toiture ou en façade assurant l'évacuation naturelle des fumées.",
+      "synonymes_usage": [
+        "DENFC",
+        "exutoire",
+        "trappe de désenfumage",
+        "lanterneau",
+        "les capots sur le toit"
+      ],
+      "corpus": {
+        "ERP": [
+          "DF 4 à DF 8"
+        ]
+      },
+      "autres_sources": [
+        "instruction technique n° 246"
+      ],
+      "variables_determinantes": [
+        "surface_local"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "conception",
+        "exploitation"
+      ],
+      "profils": [
+        "architecte",
+        "dirigeant",
+        "gestionnaire"
+      ],
+      "confiance_reference": "haute",
+      "id": "NOT-0049",
+      "theme": "T5 — Désenfumage et ventilation"
+    },
+    {
+      "terme_prefere": "surface utile d'évacuation des fumées",
+      "definition": "Surface efficace d'un dispositif d'évacuation, distincte de sa surface géométrique.",
+      "synonymes_usage": [
+        "SUE",
+        "surface de désenfumage",
+        "combien de mètres carrés d'exutoire"
+      ],
+      "corpus": {
+        "ERP": [
+          "DF 4 et s."
+        ]
+      },
+      "autres_sources": [
+        "instruction technique n° 246"
+      ],
+      "variables_determinantes": [
+        "surface_local"
+      ],
+      "niveau_normativite": "interpretatif",
+      "stade": [
+        "conception",
+        "exploitation"
+      ],
+      "profils": [
+        "architecte"
+      ],
+      "confiance_reference": "a_verifier",
+      "id": "NOT-0050",
+      "theme": "T5 — Désenfumage et ventilation"
+    },
+    {
+      "terme_prefere": "amenée d'air",
+      "definition": "Dispositif assurant l'apport d'air compensant l'extraction des fumées.",
+      "synonymes_usage": [
+        "entrée d'air",
+        "air frais",
+        "compensation"
+      ],
+      "corpus": {
+        "ERP": [
+          "DF 4 et s."
+        ]
+      },
+      "autres_sources": [
+        "instruction technique n° 246"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "conception",
+        "exploitation"
+      ],
+      "profils": [
+        "architecte"
+      ],
+      "confiance_reference": "a_verifier",
+      "id": "NOT-0051",
+      "theme": "T5 — Désenfumage et ventilation"
+    },
+    {
+      "terme_prefere": "local sans ouverture sur l'extérieur",
+      "definition": "Local ne disposant d'aucune baie donnant sur l'extérieur, soumis à des exigences renforcées de désenfumage.",
+      "synonymes_usage": [
+        "local aveugle",
+        "pas de fenêtre",
+        "local borgne",
+        "en sous-sol"
+      ],
+      "corpus": {
+        "ERP": [
+          "DF 4 à DF 6"
+        ],
+        "CT": [
+          "R. 4216-13"
+        ]
+      },
+      "variables_determinantes": [
+        "niveau_local",
+        "surface_local"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "conception",
+        "exploitation"
+      ],
+      "profils": [
+        "architecte",
+        "dirigeant"
+      ],
+      "confiance_reference": "haute",
+      "id": "NOT-0052",
+      "theme": "T5 — Désenfumage et ventilation"
+    },
+    {
+      "terme_prefere": "dispositif de sécurité collective (VMC gaz)",
+      "definition": "Organe assurant la mise en sécurité d'une installation de ventilation mécanique desservant des appareils à gaz raccordés.",
+      "synonymes_usage": [
+        "VMC gaz",
+        "DSC",
+        "la ventilation avec les chaudières",
+        "sécurité collective"
+      ],
+      "corpus": {
+        "HAB": [
+          "arr. 31/01/1986"
+        ]
+      },
+      "autres_sources": [
+        "arrêté du 23/02/2018 (installations de gaz)"
+      ],
+      "variables_determinantes": [
+        "famille_habitation"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "exploitation"
+      ],
+      "profils": [
+        "gestionnaire"
+      ],
+      "note_preventionniste": "Point de vérification périodique majeur en patrimoine locatif ; l'inaccessibilité des logements est le principal obstacle.",
+      "confiance_reference": "a_verifier",
+      "id": "NOT-0053",
+      "theme": "T5 — Désenfumage et ventilation"
+    },
+    {
+      "terme_prefere": "conduit de fumée",
+      "definition": "Conduit d'évacuation des produits de combustion, soumis à des obligations d'entretien et de ramonage.",
+      "synonymes_usage": [
+        "cheminée",
+        "ramonage",
+        "le conduit de la chaudière"
+      ],
+      "corpus": {},
+      "autres_sources": [
+        "règlement sanitaire départemental",
+        "décret n° 87-712 (réparations locatives)"
+      ],
+      "variables_determinantes": [
+        "qualite_demandeur"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "exploitation"
+      ],
+      "profils": [
+        "gestionnaire"
+      ],
+      "note_preventionniste": "La répartition propriétaire / occupant se lit dans le décret sur les réparations locatives, pas dans le CCH.",
+      "confiance_reference": "a_verifier",
+      "id": "NOT-0054",
+      "theme": "T5 — Désenfumage et ventilation"
+    },
+    {
+      "terme_prefere": "équipement d'alarme",
+      "definition": "Ensemble des dispositifs assurant la diffusion du signal d'évacuation, classé en types 1 à 4.",
+      "synonymes_usage": [
+        "alarme incendie",
+        "la sirène",
+        "l'alarme",
+        "type 4",
+        "sonnerie"
+      ],
+      "faux_amis": [
+        {
+          "terme": "alerte",
+          "corpus": "tous",
+          "note": "l'alarme prévient les occupants, l'alerte prévient les secours : ne jamais les confondre"
+        }
+      ],
+      "corpus": {
+        "ERP": [
+          "MS 61 à MS 67"
+        ],
+        "CT": [
+          "R. 4227-34",
+          "R. 4227-35",
+          "R. 4227-36"
+        ]
+      },
+      "variables_determinantes": [
+        "type_erp",
+        "categorie_erp",
+        "effectif_travailleurs"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "conception",
+        "exploitation"
+      ],
+      "profils": [
+        "architecte",
+        "dirigeant"
+      ],
+      "note_preventionniste": "PIÈGE N°4 : reformuler systématiquement avant d'instruire. Notion absente de l'habitation ordinaire.",
+      "confiance_reference": "haute",
+      "id": "NOT-0055",
+      "theme": "T6 — Alarme, détection, moyens de secours"
+    },
+    {
+      "terme_prefere": "alerte",
+      "definition": "Transmission de l'information aux services publics de secours.",
+      "synonymes_usage": [
+        "appeler les pompiers",
+        "prévenir les secours",
+        "le 18"
+      ],
+      "corpus": {
+        "ERP": [
+          "MS 70 et s."
+        ],
+        "CT": [
+          "R. 4227-37"
+        ]
+      },
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "exploitation"
+      ],
+      "profils": [
+        "dirigeant"
+      ],
+      "confiance_reference": "a_verifier",
+      "id": "NOT-0056",
+      "theme": "T6 — Alarme, détection, moyens de secours"
+    },
+    {
+      "terme_prefere": "système de sécurité incendie",
+      "definition": "Ensemble des matériels assurant la détection, la mise en sécurité et l'alarme, classé de la catégorie A à E.",
+      "synonymes_usage": [
+        "SSI",
+        "la centrale",
+        "le tableau incendie",
+        "l'armoire",
+        "catégorie A"
+      ],
+      "corpus": {
+        "ERP": [
+          "MS 53 à MS 60"
+        ]
+      },
+      "autres_sources": [
+        "norme NF S 61-931 et suivantes"
+      ],
+      "variables_determinantes": [
+        "type_erp",
+        "categorie_erp"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "conception",
+        "exploitation"
+      ],
+      "profils": [
+        "architecte"
+      ],
+      "note_preventionniste": "Les normes NF S 61-93x sont sous droits : les référencer, jamais les restituer.",
+      "confiance_reference": "haute",
+      "id": "NOT-0057",
+      "theme": "T6 — Alarme, détection, moyens de secours"
+    },
+    {
+      "terme_prefere": "centralisateur de mise en sécurité incendie",
+      "definition": "Équipement recevant les informations et commandant les dispositifs actionnés de sécurité.",
+      "synonymes_usage": [
+        "CMSI",
+        "la centrale de mise en sécurité"
+      ],
+      "corpus": {
+        "ERP": [
+          "MS 53 à MS 60"
+        ]
+      },
+      "autres_sources": [
+        "norme NF S 61-931"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "conception",
+        "exploitation"
+      ],
+      "profils": [
+        "architecte"
+      ],
+      "confiance_reference": "a_verifier",
+      "id": "NOT-0058",
+      "theme": "T6 — Alarme, détection, moyens de secours"
+    },
+    {
+      "terme_prefere": "détection automatique d'incendie",
+      "definition": "Installation assurant la détection précoce d'un sinistre et le déclenchement des asservissements.",
+      "synonymes_usage": [
+        "détection",
+        "détecteurs au plafond",
+        "DAI",
+        "capteurs de fumée"
+      ],
+      "corpus": {
+        "ERP": [
+          "MS 56"
+        ],
+        "CT": [
+          "R. 4227-30"
+        ]
+      },
+      "variables_determinantes": [
+        "type_erp",
+        "categorie_erp",
+        "nature_risque"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "conception",
+        "exploitation"
+      ],
+      "profils": [
+        "architecte",
+        "dirigeant"
+      ],
+      "note_preventionniste": "Distinguer détection généralisée et détection limitée aux seuls locaux à risques ou aux circulations.",
+      "confiance_reference": "a_verifier",
+      "id": "NOT-0059",
+      "theme": "T6 — Alarme, détection, moyens de secours"
+    },
+    {
+      "terme_prefere": "détecteur de fumée normalisé",
+      "definition": "Détecteur autonome avertisseur installé dans les logements, à la charge du propriétaire pour l'installation.",
+      "synonymes_usage": [
+        "DAAF",
+        "détecteur de fumée",
+        "le détecteur du logement",
+        "l'alarme du locataire"
+      ],
+      "corpus": {},
+      "autres_sources": [
+        "CCH L. 142-2 et s. (ex-L. 129-8)",
+        "arrêté du 05/02/2013",
+        "décret n° 2011-36"
+      ],
+      "variables_determinantes": [
+        "qualite_demandeur"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "exploitation"
+      ],
+      "profils": [
+        "gestionnaire"
+      ],
+      "note_preventionniste": "Répartition légale : installation au propriétaire, entretien à l'occupant. Ne pas confondre avec la DAI d'un SSI.",
+      "confiance_reference": "haute",
+      "id": "NOT-0060",
+      "theme": "T6 — Alarme, détection, moyens de secours"
+    },
+    {
+      "terme_prefere": "extincteur portatif",
+      "definition": "Appareil mobile d'extinction, dont le nombre et la nature sont fonction de la surface et des risques.",
+      "synonymes_usage": [
+        "extincteur",
+        "les bouteilles rouges",
+        "un par étage"
+      ],
+      "corpus": {
+        "ERP": [
+          "MS 38",
+          "MS 39"
+        ],
+        "CT": [
+          "R. 4227-28",
+          "R. 4227-29"
+        ]
+      },
+      "variables_determinantes": [
+        "surface_local",
+        "nature_risque"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "conception",
+        "exploitation"
+      ],
+      "profils": [
+        "dirigeant",
+        "architecte"
+      ],
+      "note_preventionniste": "Notion absente du corpus habitation : leur présence en parties communes relève de l'assurance ou du volontariat.",
+      "confiance_reference": "haute",
+      "id": "NOT-0061",
+      "theme": "T6 — Alarme, détection, moyens de secours"
+    },
+    {
+      "terme_prefere": "robinet d'incendie armé",
+      "definition": "Poste fixe de première intervention alimenté en eau.",
+      "synonymes_usage": [
+        "RIA",
+        "le tuyau dans le placard",
+        "dévidoir"
+      ],
+      "corpus": {
+        "ERP": [
+          "MS 14 à MS 17"
+        ],
+        "CT": [
+          "R. 4227-30"
+        ]
+      },
+      "variables_determinantes": [
+        "type_erp",
+        "nature_risque"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "conception",
+        "exploitation"
+      ],
+      "profils": [
+        "architecte",
+        "dirigeant"
+      ],
+      "confiance_reference": "a_verifier",
+      "id": "NOT-0062",
+      "theme": "T6 — Alarme, détection, moyens de secours"
+    },
+    {
+      "terme_prefere": "système d'extinction automatique du type sprinkleur",
+      "definition": "Installation fixe assurant l'extinction ou le contrôle automatique d'un incendie.",
+      "synonymes_usage": [
+        "sprinkler",
+        "sprinklage",
+        "extinction automatique",
+        "arrosage automatique",
+        "ESFR"
+      ],
+      "corpus": {
+        "ERP": [
+          "MS 25 à MS 30"
+        ],
+        "CT": [
+          "R. 4227-30"
+        ]
+      },
+      "autres_sources": [
+        "règles APSAD R1 (contractuel)"
+      ],
+      "variables_determinantes": [
+        "type_erp",
+        "categorie_erp",
+        "nature_risque"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "conception",
+        "exploitation"
+      ],
+      "profils": [
+        "architecte",
+        "dirigeant"
+      ],
+      "note_preventionniste": "Souvent exigé par l'assureur avant de l'être par le règlement : qualifier le fondement avant de répondre.",
+      "confiance_reference": "a_verifier",
+      "id": "NOT-0063",
+      "theme": "T6 — Alarme, détection, moyens de secours"
+    },
+    {
+      "terme_prefere": "colonne sèche",
+      "definition": "Canalisation fixe non alimentée en permanence, mise en charge par les secours.",
+      "synonymes_usage": [
+        "colonne sèche",
+        "prise pompiers dans la cage",
+        "colonne humide"
+      ],
+      "corpus": {
+        "ERP": [
+          "MS 18 à MS 21"
+        ],
+        "HAB": [
+          "arr. 31/01/1986 art. 98"
+        ]
+      },
+      "variables_determinantes": [
+        "hauteur_plancher_bas",
+        "famille_habitation",
+        "categorie_erp"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "conception",
+        "exploitation"
+      ],
+      "profils": [
+        "architecte",
+        "gestionnaire"
+      ],
+      "confiance_reference": "a_verifier",
+      "id": "NOT-0064",
+      "theme": "T6 — Alarme, détection, moyens de secours"
+    },
+    {
+      "terme_prefere": "éclairage de sécurité",
+      "definition": "Éclairage assurant l'évacuation (balisage) et, le cas échéant, l'ambiance ou l'anti-panique.",
+      "synonymes_usage": [
+        "BAES",
+        "éclairage de secours",
+        "les blocs verts",
+        "bloc de secours"
+      ],
+      "corpus": {
+        "ERP": [
+          "EC 7 à EC 15"
+        ],
+        "CT": [
+          "R. 4227-13",
+          "R. 4227-14"
+        ],
+        "HAB": [
+          "arr. 31/01/1986 art. 36"
+        ]
+      },
+      "variables_determinantes": [
+        "corpus",
+        "effectif_public",
+        "effectif_travailleurs"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "conception",
+        "exploitation"
+      ],
+      "profils": [
+        "architecte",
+        "dirigeant",
+        "gestionnaire"
+      ],
+      "confiance_reference": "haute",
+      "id": "NOT-0065",
+      "theme": "T6 — Alarme, détection, moyens de secours"
+    },
+    {
+      "terme_prefere": "consigne de sécurité incendie",
+      "definition": "Document affiché précisant le matériel d'extinction, les personnes désignées, les modalités d'alerte et la conduite de l'évacuation.",
+      "synonymes_usage": [
+        "consignes",
+        "la fiche affichée",
+        "plan d'évacuation",
+        "affichage"
+      ],
+      "faux_amis": [
+        {
+          "terme": "plan d'évacuation",
+          "corpus": "CT",
+          "note": "le code du travail impose une consigne, dont le plan n'est qu'un support"
+        },
+        {
+          "terme": "plan d'intervention",
+          "corpus": "ERP",
+          "note": "destiné aux secours, distinct du plan d'évacuation destiné aux occupants"
+        }
+      ],
+      "corpus": {
+        "ERP": [
+          "MS 41"
+        ],
+        "CT": [
+          "R. 4227-37",
+          "R. 4227-38"
+        ]
+      },
+      "autres_sources": [
+        "arrêté du 04/11/1993 (signalisation)"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "exploitation"
+      ],
+      "profils": [
+        "dirigeant",
+        "architecte",
+        "gestionnaire"
+      ],
+      "confiance_reference": "haute",
+      "id": "NOT-0066",
+      "theme": "T6 — Alarme, détection, moyens de secours"
+    },
+    {
+      "terme_prefere": "document unique d'évaluation des risques professionnels",
+      "definition": "Document transcrivant les résultats de l'évaluation des risques, dont le risque incendie et explosion.",
+      "synonymes_usage": [
+        "DU",
+        "DUER",
+        "document unique",
+        "l'évaluation des risques"
+      ],
+      "corpus": {
+        "CT": [
+          "L. 4121-3",
+          "L. 4121-3-1"
+        ]
+      },
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "exploitation"
+      ],
+      "profils": [
+        "dirigeant"
+      ],
+      "confiance_reference": "haute",
+      "id": "NOT-0067",
+      "theme": "T7 — Vocabulaire propre au code du travail"
+    },
+    {
+      "terme_prefere": "atmosphère explosive",
+      "definition": "Mélange susceptible de former une atmosphère explosive, imposant un classement en zones.",
+      "synonymes_usage": [
+        "ATEX",
+        "zone ATEX",
+        "risque d'explosion",
+        "poussières",
+        "vapeurs"
+      ],
+      "corpus": {
+        "CT": [
+          "R. 4227-42 et s.",
+          "R. 4216-31"
+        ]
+      },
+      "variables_determinantes": [
+        "nature_risque"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "conception",
+        "exploitation"
+      ],
+      "profils": [
+        "dirigeant"
+      ],
+      "confiance_reference": "haute",
+      "id": "NOT-0068",
+      "theme": "T7 — Vocabulaire propre au code du travail"
+    },
+    {
+      "terme_prefere": "document relatif à la protection contre les explosions",
+      "definition": "Document formalisant l'évaluation du risque d'explosion et les mesures retenues.",
+      "synonymes_usage": [
+        "DRPCE",
+        "le document ATEX",
+        "dossier ATEX"
+      ],
+      "corpus": {
+        "CT": [
+          "R. 4227-42 et s."
+        ]
+      },
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "exploitation"
+      ],
+      "profils": [
+        "dirigeant"
+      ],
+      "confiance_reference": "a_verifier",
+      "id": "NOT-0069",
+      "theme": "T7 — Vocabulaire propre au code du travail"
+    },
+    {
+      "terme_prefere": "travaux par point chaud",
+      "definition": "Travaux générant des sources d'inflammation, relevant des travaux dangereux soumis à plan de prévention.",
+      "synonymes_usage": [
+        "permis de feu",
+        "soudure",
+        "meulage",
+        "découpe"
+      ],
+      "corpus": {
+        "CT": [
+          "R. 4512-6",
+          "R. 4512-7"
+        ]
+      },
+      "autres_sources": [
+        "arrêté du 19/03/1993"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "exploitation"
+      ],
+      "profils": [
+        "dirigeant"
+      ],
+      "note_preventionniste": "Le permis de feu lui-même n'est pas un terme réglementaire : la règle est le plan de prévention écrit.",
+      "confiance_reference": "haute",
+      "id": "NOT-0070",
+      "theme": "T7 — Vocabulaire propre au code du travail"
+    },
+    {
+      "terme_prefere": "travailleurs chargés de la mise en œuvre des moyens de premiers secours",
+      "definition": "Personnes désignées par l'employeur pour mettre en œuvre les moyens d'extinction et diriger l'évacuation.",
+      "synonymes_usage": [
+        "EPI",
+        "équipier de première intervention",
+        "ESI",
+        "équipier de seconde intervention",
+        "guide-file",
+        "serre-file",
+        "les référents incendie"
+      ],
+      "corpus": {
+        "CT": [
+          "R. 4227-38"
+        ]
+      },
+      "niveau_normativite": "usage_professionnel",
+      "stade": [
+        "exploitation"
+      ],
+      "profils": [
+        "dirigeant"
+      ],
+      "note_preventionniste": "EPI, ESI, guide-file et serre-file relèvent du vocabulaire assureur et INRS, non du code. Chercher la formule longue.",
+      "confiance_reference": "a_verifier",
+      "id": "NOT-0071",
+      "theme": "T7 — Vocabulaire propre au code du travail"
+    },
+    {
+      "terme_prefere": "essais et exercices périodiques",
+      "definition": "Exercices d'évacuation et essais des matériels, organisés au moins tous les six mois.",
+      "synonymes_usage": [
+        "exercice d'évacuation",
+        "exercice incendie",
+        "on fait sonner l'alarme"
+      ],
+      "corpus": {
+        "CT": [
+          "R. 4227-39"
+        ]
+      },
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "exploitation"
+      ],
+      "profils": [
+        "dirigeant"
+      ],
+      "confiance_reference": "haute",
+      "id": "NOT-0072",
+      "theme": "T7 — Vocabulaire propre au code du travail"
+    },
+    {
+      "terme_prefere": "formation à la sécurité",
+      "definition": "Formation pratique et appropriée relative aux conditions de circulation et au comportement en cas d'incendie.",
+      "synonymes_usage": [
+        "formation incendie",
+        "formation extincteur",
+        "sensibilisation"
+      ],
+      "corpus": {
+        "CT": [
+          "L. 4141-2",
+          "R. 4141-3",
+          "R. 4141-3-1",
+          "L. 4154-2"
+        ]
+      },
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "exploitation"
+      ],
+      "profils": [
+        "dirigeant"
+      ],
+      "confiance_reference": "haute",
+      "id": "NOT-0073",
+      "theme": "T7 — Vocabulaire propre au code du travail"
+    },
+    {
+      "terme_prefere": "local de charge d'accumulateurs",
+      "definition": "Local affecté à la charge de batteries, soumis à des exigences de ventilation liées au dégagement d'hydrogène.",
+      "synonymes_usage": [
+        "local de charge",
+        "charge des chariots",
+        "batteries",
+        "lithium"
+      ],
+      "corpus": {
+        "CT": [
+          "R. 4227-22 et s."
+        ]
+      },
+      "variables_determinantes": [
+        "nature_risque"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "conception",
+        "exploitation"
+      ],
+      "profils": [
+        "dirigeant"
+      ],
+      "confiance_reference": "a_verifier",
+      "id": "NOT-0074",
+      "theme": "T7 — Vocabulaire propre au code du travail"
+    },
+    {
+      "terme_prefere": "matières inflammables",
+      "definition": "Substances dont l'emploi et le stockage en local de travail sont limités en quantité.",
+      "synonymes_usage": [
+        "produits inflammables",
+        "solvants",
+        "bidons",
+        "stockage de produits"
+      ],
+      "corpus": {
+        "CT": [
+          "R. 4227-20 à R. 4227-27"
+        ]
+      },
+      "variables_determinantes": [
+        "nature_risque"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "conception",
+        "exploitation"
+      ],
+      "profils": [
+        "dirigeant"
+      ],
+      "confiance_reference": "a_verifier",
+      "id": "NOT-0075",
+      "theme": "T7 — Vocabulaire propre au code du travail"
+    },
+    {
+      "terme_prefere": "référentiel assureur",
+      "definition": "Prescriptions techniques d'origine contractuelle, dépourvues de portée réglementaire.",
+      "synonymes_usage": [
+        "APSAD",
+        "règle R1",
+        "règle R4",
+        "R7",
+        "exigence de l'assurance",
+        "CNPP"
+      ],
+      "corpus": {},
+      "autres_sources": [
+        "référentiels CNPP",
+        "conditions particulières du contrat"
+      ],
+      "niveau_normativite": "contractuel",
+      "stade": [
+        "exploitation"
+      ],
+      "profils": [
+        "dirigeant",
+        "gestionnaire"
+      ],
+      "note_preventionniste": "Distinction structurante : le système doit toujours qualifier le fondement d'une exigence avant d'y répondre.",
+      "confiance_reference": "haute",
+      "id": "NOT-0076",
+      "theme": "T7 — Vocabulaire propre au code du travail"
+    },
+    {
+      "terme_prefere": "mise en demeure",
+      "definition": "Acte par lequel l'agent de contrôle enjoint à l'employeur de se conformer, préalablement au procès-verbal.",
+      "synonymes_usage": [
+        "l'inspection du travail m'a mis un papier",
+        "j'ai reçu un courrier",
+        "observation"
+      ],
+      "corpus": {
+        "CT": [
+          "L. 4721-1",
+          "L. 4731-1",
+          "L. 4732-1",
+          "L. 4741-1"
+        ]
+      },
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "exploitation"
+      ],
+      "profils": [
+        "dirigeant"
+      ],
+      "confiance_reference": "haute",
+      "id": "NOT-0077",
+      "theme": "T7 — Vocabulaire propre au code du travail"
+    },
+    {
+      "terme_prefere": "registres et documents de santé et sécurité",
+      "definition": "Ensemble des registres et documents tenus à disposition de l'agent de contrôle.",
+      "synonymes_usage": [
+        "registre de sécurité",
+        "le classeur",
+        "les rapports"
+      ],
+      "faux_amis": [
+        {
+          "terme": "registre de sécurité",
+          "corpus": "ERP",
+          "note": "le registre de sécurité ERP a un contenu et un fondement distincts"
+        }
+      ],
+      "corpus": {
+        "CT": [
+          "L. 4711-1 et s."
+        ]
+      },
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "exploitation"
+      ],
+      "profils": [
+        "dirigeant"
+      ],
+      "confiance_reference": "a_verifier",
+      "id": "NOT-0078",
+      "theme": "T7 — Vocabulaire propre au code du travail"
+    },
+    {
+      "terme_prefere": "consultation du comité social et économique",
+      "definition": "Obligation de consulter le CSE sur les projets touchant aux conditions de santé et de sécurité.",
+      "synonymes_usage": [
+        "CSE",
+        "les représentants du personnel",
+        "CHSCT"
+      ],
+      "termes_obsoletes": [
+        {
+          "terme": "CHSCT",
+          "remplace_par": "CSE",
+          "depuis": "2020-01-01"
+        }
+      ],
+      "corpus": {
+        "CT": [
+          "L. 2312-8",
+          "L. 2312-9",
+          "L. 2312-27"
+        ]
+      },
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "exploitation"
+      ],
+      "profils": [
+        "dirigeant"
+      ],
+      "confiance_reference": "a_verifier",
+      "id": "NOT-0079",
+      "theme": "T7 — Vocabulaire propre au code du travail"
+    },
+    {
+      "terme_prefere": "logement décent",
+      "definition": "Logement ne présentant pas de risque manifeste pour la sécurité physique et la santé des occupants.",
+      "synonymes_usage": [
+        "décence",
+        "logement indécent",
+        "insalubre",
+        "logement dangereux"
+      ],
+      "faux_amis": [
+        {
+          "terme": "insalubrité",
+          "corpus": "CSP",
+          "note": "police distincte de la décence, relevant de la santé publique"
+        },
+        {
+          "terme": "péril",
+          "corpus": "CCH",
+          "note": "remplacé depuis 2021 par la police de la sécurité des immeubles (L. 511-1 et s.)"
+        }
+      ],
+      "corpus": {},
+      "autres_sources": [
+        "loi n° 89-462 art. 6",
+        "décret n° 2002-120",
+        "CCH L. 511-1 et s."
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "exploitation"
+      ],
+      "profils": [
+        "gestionnaire"
+      ],
+      "note_preventionniste": "Trois polices à ne jamais confondre : décence (civil), insalubrité (santé), sécurité des immeubles (CCH).",
+      "confiance_reference": "haute",
+      "id": "NOT-0080",
+      "theme": "T8 — Vocabulaire propre à l'habitation et au rapport locatif"
+    },
+    {
+      "terme_prefere": "charges locatives récupérables",
+      "definition": "Dépenses limitativement énumérées pouvant être refacturées au locataire.",
+      "synonymes_usage": [
+        "charges récupérables",
+        "je peux refacturer",
+        "charges locatives"
+      ],
+      "corpus": {},
+      "autres_sources": [
+        "décret n° 87-713 du 26/08/1987"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "exploitation"
+      ],
+      "profils": [
+        "gestionnaire"
+      ],
+      "confiance_reference": "haute",
+      "id": "NOT-0081",
+      "theme": "T8 — Vocabulaire propre à l'habitation et au rapport locatif"
+    },
+    {
+      "terme_prefere": "obligation de souffrir les travaux",
+      "definition": "Obligation du locataire de permettre l'accès pour la réalisation des travaux nécessaires.",
+      "synonymes_usage": [
+        "le locataire refuse l'accès",
+        "il ne me laisse pas rentrer",
+        "droit de visite"
+      ],
+      "corpus": {},
+      "autres_sources": [
+        "loi n° 89-462 art. 7 e)"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "exploitation"
+      ],
+      "profils": [
+        "gestionnaire"
+      ],
+      "confiance_reference": "haute",
+      "id": "NOT-0082",
+      "theme": "T8 — Vocabulaire propre à l'habitation et au rapport locatif"
+    },
+    {
+      "terme_prefere": "hébergement et relogement",
+      "definition": "Obligations pesant sur le propriétaire lorsque les locaux deviennent impropres à l'habitation.",
+      "synonymes_usage": [
+        "relogement après incendie",
+        "où je mets mes locataires",
+        "suspension du loyer"
+      ],
+      "corpus": {},
+      "autres_sources": [
+        "CCH L. 521-1 et s."
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "exploitation"
+      ],
+      "profils": [
+        "gestionnaire"
+      ],
+      "confiance_reference": "haute",
+      "id": "NOT-0083",
+      "theme": "T8 — Vocabulaire propre à l'habitation et au rapport locatif"
+    },
+    {
+      "terme_prefere": "local d'entreposage des ordures ménagères",
+      "definition": "Local recevant les conteneurs, soumis à des exigences d'isolement et de ventilation.",
+      "synonymes_usage": [
+        "local poubelles",
+        "local OM",
+        "vide-ordures",
+        "local déchets"
+      ],
+      "corpus": {
+        "HAB": [
+          "arr. 31/01/1986 art. 78 et s."
+        ]
+      },
+      "autres_sources": [
+        "règlement sanitaire départemental"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "conception",
+        "exploitation"
+      ],
+      "profils": [
+        "gestionnaire"
+      ],
+      "confiance_reference": "a_verifier",
+      "id": "NOT-0084",
+      "theme": "T8 — Vocabulaire propre à l'habitation et au rapport locatif"
+    },
+    {
+      "terme_prefere": "parc de stationnement couvert",
+      "definition": "Parc lié à un bâtiment, soumis à des règles propres d'isolement, de ventilation et de désenfumage.",
+      "synonymes_usage": [
+        "parking souterrain",
+        "le sous-sol",
+        "garage collectif",
+        "box"
+      ],
+      "corpus": {
+        "ERP": [
+          "dispositions particulières type PS"
+        ],
+        "HAB": [
+          "arr. 31/01/1986 art. 77 et s."
+        ]
+      },
+      "autres_sources": [
+        "nomenclature ICPE rubrique 2935 (selon seuils)"
+      ],
+      "variables_determinantes": [
+        "surface_local",
+        "niveau_local"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "conception",
+        "exploitation"
+      ],
+      "profils": [
+        "architecte",
+        "gestionnaire"
+      ],
+      "confiance_reference": "a_verifier",
+      "id": "NOT-0085",
+      "theme": "T8 — Vocabulaire propre à l'habitation et au rapport locatif"
+    },
+    {
+      "terme_prefere": "infrastructure de recharge pour véhicules électriques",
+      "definition": "Équipement de recharge, soumis à des obligations de pré-équipement et à des prescriptions d'implantation.",
+      "synonymes_usage": [
+        "borne de recharge",
+        "IRVE",
+        "recharger les voitures électriques",
+        "wallbox"
+      ],
+      "corpus": {},
+      "autres_sources": [
+        "CCH L. 113-11 et s.",
+        "CCH R. 113-x",
+        "arrêtés d'application"
+      ],
+      "variables_determinantes": [
+        "niveau_local"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "conception",
+        "exploitation"
+      ],
+      "profils": [
+        "architecte",
+        "gestionnaire"
+      ],
+      "note_preventionniste": "Sujet en évolution rapide : vérifier systématiquement la version en vigueur et les positions départementales.",
+      "confiance_reference": "a_verifier",
+      "id": "NOT-0086",
+      "theme": "T8 — Vocabulaire propre à l'habitation et au rapport locatif"
+    },
+    {
+      "terme_prefere": "pouvoirs de police du maire",
+      "definition": "Fondement du contrôle de la sécurité des bâtiments d'habitation, à défaut de commission de sécurité.",
+      "synonymes_usage": [
+        "qui contrôle mon immeuble",
+        "la mairie peut-elle intervenir",
+        "arrêté municipal"
+      ],
+      "corpus": {},
+      "autres_sources": [
+        "CGCT L. 2212-2",
+        "CCH L. 511-1 et s."
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "exploitation"
+      ],
+      "profils": [
+        "gestionnaire"
+      ],
+      "confiance_reference": "haute",
+      "id": "NOT-0087",
+      "theme": "T8 — Vocabulaire propre à l'habitation et au rapport locatif"
+    },
+    {
+      "terme_prefere": "règlement sanitaire départemental",
+      "definition": "Texte préfectoral régissant notamment l'entreposage, la salubrité et l'usage des locaux d'habitation.",
+      "synonymes_usage": [
+        "RSD",
+        "le règlement du département",
+        "salubrité"
+      ],
+      "corpus": {},
+      "autres_sources": [
+        "RSD type",
+        "arrêté préfectoral départemental"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "exploitation"
+      ],
+      "profils": [
+        "gestionnaire"
+      ],
+      "note_preventionniste": "Souvent la seule base opposable pour traiter les stockages et encombrements en habitation.",
+      "confiance_reference": "a_verifier",
+      "id": "NOT-0088",
+      "theme": "T8 — Vocabulaire propre à l'habitation et au rapport locatif"
+    },
+    {
+      "terme_prefere": "notice descriptive de sécurité",
+      "definition": "Pièce du dossier d'autorisation exposant les dispositions de sécurité retenues.",
+      "synonymes_usage": [
+        "notice de sécurité",
+        "le dossier sécurité",
+        "la notice"
+      ],
+      "corpus": {
+        "ERP": [
+          "GE 1 et s."
+        ]
+      },
+      "autres_sources": [
+        "CCH R. 143-24 et s. (ex-R. 123-22)"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "conception"
+      ],
+      "profils": [
+        "architecte"
+      ],
+      "confiance_reference": "a_verifier",
+      "id": "NOT-0089",
+      "theme": "T9 — Procédure, contrôle, traçabilité"
+    },
+    {
+      "terme_prefere": "autorisation de travaux",
+      "definition": "Autorisation préalable requise pour la construction, l'aménagement ou la modification d'un ERP.",
+      "synonymes_usage": [
+        "AT",
+        "permis pour l'ERP",
+        "demande d'autorisation"
+      ],
+      "corpus": {},
+      "autres_sources": [
+        "CCH R. 143-24 et s. (ex-R. 123-22)"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "conception"
+      ],
+      "profils": [
+        "architecte"
+      ],
+      "confiance_reference": "a_verifier",
+      "id": "NOT-0090",
+      "theme": "T9 — Procédure, contrôle, traçabilité"
+    },
+    {
+      "terme_prefere": "commission de sécurité",
+      "definition": "Organe consultatif examinant les dossiers et visitant les établissements recevant du public.",
+      "synonymes_usage": [
+        "la commission",
+        "le passage des pompiers",
+        "visite de sécurité"
+      ],
+      "corpus": {
+        "ERP": [
+          "GE 2 et s."
+        ]
+      },
+      "autres_sources": [
+        "CCH R. 143-1 et s."
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "conception",
+        "exploitation"
+      ],
+      "profils": [
+        "architecte",
+        "dirigeant",
+        "gestionnaire"
+      ],
+      "note_preventionniste": "N'existe ni en code du travail, ni pour l'habitation ordinaire. Réponse d'absence à produire explicitement.",
+      "confiance_reference": "haute",
+      "id": "NOT-0091",
+      "theme": "T9 — Procédure, contrôle, traçabilité"
+    },
+    {
+      "terme_prefere": "autorisation d'ouverture au public",
+      "definition": "Décision de l'autorité de police autorisant l'ouverture après avis de la commission.",
+      "synonymes_usage": [
+        "l'autorisation d'ouvrir",
+        "avis favorable",
+        "réception"
+      ],
+      "corpus": {},
+      "autres_sources": [
+        "CCH R. 143-38 et s. (ex-R. 123-45)"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "exploitation"
+      ],
+      "profils": [
+        "architecte",
+        "dirigeant"
+      ],
+      "confiance_reference": "a_verifier",
+      "id": "NOT-0092",
+      "theme": "T9 — Procédure, contrôle, traçabilité"
+    },
+    {
+      "terme_prefere": "registre de sécurité",
+      "definition": "Document consignant les vérifications, travaux et exercices, tenu par l'exploitant.",
+      "synonymes_usage": [
+        "le registre",
+        "le classeur sécurité",
+        "le cahier"
+      ],
+      "corpus": {
+        "ERP": [
+          "GE 2 et s."
+        ],
+        "CT": [
+          "L. 4711-1 et s. (registres et documents, périmètre distinct)"
+        ]
+      },
+      "autres_sources": [
+        "CCH R. 143-34 (ex-R. 123-51)"
+      ],
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "exploitation"
+      ],
+      "profils": [
+        "architecte",
+        "dirigeant",
+        "gestionnaire"
+      ],
+      "note_preventionniste": "Aucune obligation générale équivalente en habitation ordinaire : y construire une traçabilité de fait.",
+      "confiance_reference": "haute",
+      "id": "NOT-0093",
+      "theme": "T9 — Procédure, contrôle, traçabilité"
+    },
+    {
+      "terme_prefere": "vérifications techniques",
+      "definition": "Contrôles périodiques des installations par des personnes ou organismes qualifiés ou agréés.",
+      "synonymes_usage": [
+        "contrôle annuel",
+        "visite de maintenance",
+        "vérif périodique",
+        "le bureau de contrôle"
+      ],
+      "corpus": {
+        "ERP": [
+          "GE 6 à GE 10"
+        ],
+        "CT": [
+          "R. 4224-17",
+          "R. 4226-14 et s."
+        ],
+        "HAB": [
+          "dispersé : gaz, ascenseurs, électricité des parties communes"
+        ]
+      },
+      "niveau_normativite": "reglementaire",
+      "stade": [
+        "exploitation"
+      ],
+      "profils": [
+        "architecte",
+        "dirigeant",
+        "gestionnaire"
+      ],
+      "confiance_reference": "haute",
+      "id": "NOT-0094",
+      "theme": "T9 — Procédure, contrôle, traçabilité"
+    },
+    {
+      "terme_prefere": "rapport de vérification réglementaire",
+      "definition": "Document établi à l'issue d'une vérification, consignant les observations.",
+      "synonymes_usage": [
+        "RVRAT",
+        "RVRE",
+        "rapport du bureau de contrôle",
+        "le rapport de vérif"
+      ],
+      "corpus": {
+        "ERP": [
+          "GE 6 à GE 10"
+        ],
+        "CT": [
+          "R. 4224-17"
+        ]
+      },
+      "niveau_normativite": "usage_professionnel",
+      "stade": [
+        "exploitation"
+      ],
+      "profils": [
+        "architecte",
+        "dirigeant",
+        "gestionnaire"
+      ],
+      "note_preventionniste": "RVRAT est un sigle de bureau de contrôle, non un terme réglementaire : convertir avant recherche.",
+      "confiance_reference": "a_verifier",
+      "id": "NOT-0095",
+      "theme": "T9 — Procédure, contrôle, traçabilité"
+    },
+    {
+      "terme_prefere": "coordonnateur du système de sécurité incendie",
+      "definition": "Intervenant assurant la cohérence du SSI de la conception à la réception.",
+      "synonymes_usage": [
+        "coordonnateur SSI",
+        "le coordo",
+        "mission SSI"
+      ],
+      "corpus": {
+        "ERP": [
+          "MS 53 et s."
+        ]
+      },
+      "autres_sources": [
+        "norme NF S 61-931"
+      ],
+      "niveau_normativite": "normatif",
+      "stade": [
+        "conception"
+      ],
+      "profils": [
+        "architecte"
+      ],
+      "note_preventionniste": "Obligation d'origine normative relayée par le règlement : qualifier le fondement.",
+      "confiance_reference": "a_verifier",
+      "id": "NOT-0096",
+      "theme": "T9 — Procédure, contrôle, traçabilité"
+    }
+  ],
+  "assertions_negatives": [
+    {
+      "id": "NEG-01",
+      "notion": "commission de sécurité",
+      "corpus_interroge": "HAB",
+      "assertion": "La notion de commission de sécurité n'existe pas pour les bâtiments d'habitation ordinaires.",
+      "orientation": "Le contrôle relève des pouvoirs de police du maire (CGCT L. 2212-2) et de la police de la sécurité des immeubles collectifs à usage principal d'habitation (CCH L. 511-1 et s.).",
+      "references": [
+        "CGCT L. 2212-2",
+        "CCH L. 511-1 et s."
+      ]
+    },
+    {
+      "id": "NEG-02",
+      "notion": "commission de sécurité",
+      "corpus_interroge": "CT",
+      "assertion": "Le code du travail n'organise pas de commission de sécurité ni de visite périodique d'ouverture.",
+      "orientation": "Le contrôle est exercé a posteriori par l'agent de contrôle de l'inspection du travail (L. 4721-1, L. 4731-1).",
+      "references": [
+        "L. 4721-1",
+        "L. 4731-1"
+      ]
+    },
+    {
+      "id": "NEG-03",
+      "notion": "registre de sécurité",
+      "corpus_interroge": "HAB",
+      "assertion": "Aucune obligation générale de tenue d'un registre de sécurité n'est prévue en habitation ordinaire.",
+      "orientation": "Le régime du registre est propre aux ERP (CCH R. 143-34) et aux IGH. En habitation, la traçabilité relève de la prudence du propriétaire, non d'un texte.",
+      "references": [
+        "CCH R. 143-34 (ex-R. 123-51)"
+      ]
+    },
+    {
+      "id": "NEG-04",
+      "notion": "espace d'attente sécurisé",
+      "corpus_interroge": "HAB",
+      "assertion": "La notion d'espace d'attente sécurisé n'existe pas dans le corpus habitation.",
+      "orientation": "Elle est propre aux ERP (CO 57 à CO 60) et aux lieux de travail (R. 4216-2-1). En habitation, la doctrine est le maintien dans le logement.",
+      "references": [
+        "CO 57 à CO 60",
+        "R. 4216-2-1"
+      ]
+    },
+    {
+      "id": "NEG-05",
+      "notion": "extincteur",
+      "corpus_interroge": "HAB",
+      "assertion": "Aucun texte n'impose d'extincteurs en parties communes d'un bâtiment d'habitation ordinaire.",
+      "orientation": "Leur présence procède d'une exigence d'assurance ou d'une décision de gestion ; une fois installés, ils doivent être entretenus.",
+      "references": []
+    },
+    {
+      "id": "NEG-06",
+      "notion": "équipement d'alarme",
+      "corpus_interroge": "HAB",
+      "assertion": "Aucun équipement d'alarme générale n'est exigé dans les bâtiments d'habitation ordinaires.",
+      "orientation": "L'exigence n'apparaît que dans des régimes particuliers (logements-foyers, résidences services relevant du type J ou O au titre du règlement ERP).",
+      "references": []
+    },
+    {
+      "id": "NEG-07",
+      "notion": "exercice d'évacuation",
+      "corpus_interroge": "HAB",
+      "assertion": "Aucun exercice d'évacuation périodique n'est imposé au propriétaire d'un bâtiment d'habitation.",
+      "orientation": "L'obligation semestrielle est propre au code du travail (R. 4227-39). En habitation, l'obligation se limite à l'information des occupants.",
+      "references": [
+        "R. 4227-39"
+      ]
+    },
+    {
+      "id": "NEG-08",
+      "notion": "dérogation",
+      "corpus_interroge": "CT",
+      "assertion": "Le code du travail ne prévoit pas de mécanisme de dérogation comparable à celui des ERP.",
+      "orientation": "Il combine une obligation de résultat (L. 4121-1) et des prescriptions minimales : l'écart se justifie par une démonstration d'équivalence, non par une autorisation.",
+      "references": [
+        "L. 4121-1"
+      ]
+    },
+    {
+      "id": "NEG-09",
+      "notion": "type et catégorie",
+      "corpus_interroge": "HAB",
+      "assertion": "Les bâtiments d'habitation ne sont ni typés ni catégorisés au sens du règlement ERP.",
+      "orientation": "Ils sont classés en familles (arr. 31/01/1986 art. 3).",
+      "references": [
+        "arr. 31/01/1986 art. 3"
+      ]
+    },
+    {
+      "id": "NEG-10",
+      "notion": "famille",
+      "corpus_interroge": "ERP",
+      "assertion": "La notion de famille n'a pas cours pour les établissements recevant du public.",
+      "orientation": "Le classement ERP repose sur le type d'exploitation et la catégorie (GN 1, GN 2).",
+      "references": [
+        "GN 1",
+        "GN 2"
+      ]
+    },
+    {
+      "id": "NEG-11",
+      "notion": "coupe-feu (CF)",
+      "corpus_interroge": "tous",
+      "assertion": "Les appellations CF, PF et SF ne figurent plus dans les textes postérieurs à l'arrêté du 22 mars 2004.",
+      "orientation": "Elles subsistent dans les PV anciens et le langage courant ; la recherche doit porter sur R, E, I, EI, REI.",
+      "references": [
+        "arrêté du 22/03/2004"
+      ]
+    },
+    {
+      "id": "NEG-12",
+      "notion": "point de rassemblement",
+      "corpus_interroge": "tous",
+      "assertion": "L'expression « point de rassemblement » n'est pas un terme réglementaire.",
+      "orientation": "Le code du travail impose l'évacuation vers un lieu sûr (R. 4227-1) ; la désignation du point relève de la consigne de sécurité incendie.",
+      "references": [
+        "R. 4227-1",
+        "R. 4227-37"
+      ]
+    },
+    {
+      "id": "NEG-13",
+      "notion": "équipier de première intervention (EPI)",
+      "corpus_interroge": "CT",
+      "assertion": "Les qualifications EPI, ESI, guide-file et serre-file ne figurent pas dans le code du travail.",
+      "orientation": "Le texte vise les travailleurs désignés pour mettre en œuvre les moyens de premiers secours (R. 4227-38).",
+      "references": [
+        "R. 4227-38"
+      ]
+    },
+    {
+      "id": "NEG-14",
+      "notion": "RVRAT",
+      "corpus_interroge": "tous",
+      "assertion": "RVRAT n'est pas une notion réglementaire mais un sigle de bureau de contrôle.",
+      "orientation": "Le texte vise les vérifications techniques et leurs rapports (GE 6 à GE 10 ; R. 4224-17).",
+      "references": [
+        "GE 6 à GE 10",
+        "R. 4224-17"
+      ]
+    },
+    {
+      "id": "NEG-15",
+      "notion": "règle APSAD",
+      "corpus_interroge": "tous",
+      "assertion": "Les règles APSAD ne sont pas des textes réglementaires.",
+      "orientation": "Elles constituent des référentiels contractuels d'assurance : leur non-respect a des effets sur la garantie, non sur la conformité.",
+      "references": []
+    },
+    {
+      "id": "NEG-16",
+      "notion": "sprinkleur",
+      "corpus_interroge": "HAB",
+      "assertion": "Aucun texte n'impose d'extinction automatique dans les bâtiments d'habitation ordinaires.",
+      "orientation": "L'exigence, lorsqu'elle existe, procède du régime ICPE d'un local annexe ou d'une clause d'assurance.",
+      "references": []
+    },
+    {
+      "id": "NEG-17",
+      "notion": "détecteur de fumée normalisé (DAAF)",
+      "corpus_interroge": "ERP",
+      "assertion": "Le DAAF relève du régime des logements et non du règlement ERP.",
+      "orientation": "En ERP, la détection procède d'un SSI (MS 53 et s.).",
+      "references": [
+        "CCH L. 142-2 et s.",
+        "MS 53 et s."
+      ]
+    },
+    {
+      "id": "NEG-18",
+      "notion": "notice de sécurité",
+      "corpus_interroge": "CT",
+      "assertion": "Le code du travail n'impose pas de notice descriptive de sécurité au dossier de permis.",
+      "orientation": "Les obligations pèsent sur le maître d'ouvrage au titre de la conception des lieux de travail (R. 4211-1 et s.).",
+      "references": [
+        "R. 4211-1 et s."
+      ]
+    },
+    {
+      "id": "NEG-19",
+      "notion": "unité de passage",
+      "corpus_interroge": "HAB",
+      "assertion": "Le dimensionnement des dégagements en unités de passage n'est pas la logique du corpus habitation.",
+      "orientation": "Les exigences y sont fixées en valeurs absolues selon la famille (arr. 31/01/1986).",
+      "references": [
+        "arr. 31/01/1986"
+      ]
+    },
+    {
+      "id": "NEG-20",
+      "notion": "effectif théorique du public",
+      "corpus_interroge": "CT",
+      "assertion": "L'effectif théorique du public n'a pas d'équivalent en code du travail.",
+      "orientation": "Le décompte y suit les règles des articles L. 1111-2 et L. 1111-3, de périmètre différent.",
+      "references": [
+        "L. 1111-2",
+        "L. 1111-3"
+      ]
+    }
+  ]
+}
