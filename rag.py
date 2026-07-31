@@ -560,6 +560,7 @@ class VectorStorev2:
     def __init__(self):
         self.index = None
         self.chunks = []
+        
     
     def construire(self, chunks: List[Dict], embedding_model):
         """Construit l'index"""
@@ -578,16 +579,12 @@ class VectorStorev2:
         
         faiss.write_index(self.index, "faiss_index_v2.bin")
     
-    def search(self, question: str, k: int = 8) -> List[Dict]:
+    def search(self, question: str,embedding_model, k: int = 8) -> List[Dict]:
         """Recherche les chunks similaires"""
         if self.index is None:
             return []
         
-        from sentence_transformers import SentenceTransformer
-        model = SentenceTransformer(
-            "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
-        )
-        query_vector = model.encode([question], normalize_embeddings=True)
+        query_vector = embedding_model.encode([question], normalize_embeddings=True)
         query_vector = np.asarray(query_vector, dtype="float32")
         
         scores, indexes = self.index.search(query_vector, k)
