@@ -182,7 +182,7 @@ with st.sidebar:
     
     # Initialiser RAG
     engine = get_rag_engine_v2()
-    engine.construire_index("LEGISCTA000020303815.pdf") 
+    engine.construire_index("LEGISCTA000020303815.pdf")
     # Status index
     st.subheader("📊 État du système")
     
@@ -280,7 +280,7 @@ if search_button and question:
     with st.spinner("⏳ Traitement en cours..."):
         try:
             # Traiter question
-            reponse = engine.traiter_question(question, corpus_selected or None)
+            reponse = engine.traiter_question(question, corpus_selected or None, k=k_results)
             
             # =====================================================
             # Affichage Reformulation

@@ -4,6 +4,7 @@ Moteur RAG v2 - Avec thésaurus, few-shot learning, assertions négatives et tra
 
 import json
 import asyncio
+import threading
 from typing import List, Dict, Optional, Tuple
 from dataclasses import dataclass, asdict
 from enum import Enum
@@ -144,16 +145,22 @@ class RAGEnginev2:
             "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
         )
         self.encoder = tiktoken.get_encoding("cl100k_base")
-        self.vector_store = VectorStorev2()
+        self.vector_store = VectorStorev2(self.embedding_model)
         self.chunks = []
-        
+
         # Données du thésaurus
         self.thesaurus = get_thesaurus()
         self.synonymes = get_synonymes_dict()
         self.assertions_negatives = get_assertions_negatives()
         self.variables_determinantes = get_variables_determinantes()
         self.recodifications = get_recodifications()
-        
+
+        # Protection contre les appels concurrents depuis plusieurs sessions/onglets
+        # (le moteur est partagé globalement via st.cache_resource)
+        self._index_lock = threading.Lock()
+        self._question_lock = threading.Lock()
+        self._inflight_questions = {}
+
         print("✅ RAG Engine v2 initialisé")
 
     # =====================================================
@@ -212,6 +219,18 @@ class RAGEnginev2:
         return list(set(pieges_detectes))
 
     # =====================================================
+    # 2bis - Parsing JSON des réponses LLM
+    # =====================================================
+
+    @staticmethod
+    def _extraire_json_llm(texte: str, cle_repli: str) -> Dict:
+        """Extrait le premier objet JSON d'une réponse LLM, avec repli sur le texte brut."""
+        match = re.search(r'\{.*\}', texte, re.DOTALL)
+        if match:
+            return json.loads(match.group())
+        return {cle_repli: texte}
+
+    # =====================================================
     # 3 - Reformulation améliorée
     # =====================================================
 
@@ -252,14 +271,8 @@ class RAGEnginev2:
             )
             
             result_text = response.choices[0].message.content
-            
-            # Parser JSON
-            json_match = re.search(r'\{.*\}', result_text, re.DOTALL)
-            if json_match:
-                result_json = json.loads(json_match.group())
-            else:
-                result_json = {"reformulation": result_text}
-            
+            result_json = self._extraire_json_llm(result_text, "reformulation")
+
             return ReformulatioResult(
                 reformulation=result_json.get("reformulation", question),
                 termes_normatifs=result_json.get("termes_normatifs", []),
@@ -324,24 +337,11 @@ class RAGEnginev2:
     ) -> ReponseJustifiee:
         """
         Génère une réponse avec justifications complètes
+
+        Note: l'assertion négative est déjà vérifiée par traiter_question()
+        avant l'appel à cette méthode, pas besoin de la revérifier ici.
         """
-        
-        # Vérifier assertions négatives
-        assertion = self.detecter_assertion_negative(question)
-        if assertion:
-            return ReponseJustifiee(
-                reponse=f"❌ {assertion['assertion']}\n\n💡 {assertion['explication']}",
-                comportement=ComportementAttendu.SIGNALER_ABSENCE,
-                citations=[],
-                documents_sources=[],
-                niveau_normativite=NiveauNormativite.DOCTRINAL,
-                confiance=1.0,
-                variables_manquantes=[],
-                justification="Assertion négative trouvée dans le thésaurus",
-                pieges_evites=["P1_absence"],
-                corpus_applique=corpus_applique
-            )
-        
+
         # Vérifier variables manquantes
         variables_manquantes = []
         # for var_name, var_value in reformulation.variables_requises.items():
@@ -397,14 +397,8 @@ class RAGEnginev2:
             )
             
             result_text = response.choices[0].message.content
-            
-            # Parser résultat
-            json_match = re.search(r'\{.*\}', result_text, re.DOTALL)
-            if json_match:
-                result_json = json.loads(json_match.group())
-            else:
-                result_json = {"reponse": result_text}
-            
+            result_json = self._extraire_json_llm(result_text, "reponse")
+
             # Construire citations
             citations = []
             for citation_data in result_json.get("citations", []):
@@ -454,12 +448,50 @@ class RAGEnginev2:
     def traiter_question(
         self,
         question: str,
-        corpus_filtre: Optional[List[str]] = None
+        corpus_filtre: Optional[List[str]] = None,
+        k: int = 8
+    ) -> ReponseJustifiee:
+        """
+        Point d'entrée public. Déduplique les appels concurrents identiques:
+        si la même question (même corpus, même k) est déjà en cours de
+        traitement pour une autre session/onglet, on attend son résultat
+        au lieu de déclencher un second appel LLM redondant.
+        """
+        cle = (
+            question.strip().lower(),
+            tuple(sorted(corpus_filtre)) if corpus_filtre else None,
+            k,
+        )
+
+        with self._question_lock:
+            entree = self._inflight_questions.get(cle)
+            est_meneur = entree is None
+            if est_meneur:
+                entree = {"event": threading.Event(), "resultat": None}
+                self._inflight_questions[cle] = entree
+
+        if not est_meneur:
+            entree["event"].wait()
+            return entree["resultat"]
+
+        try:
+            entree["resultat"] = self._traiter_question_impl(question, corpus_filtre, k)
+            return entree["resultat"]
+        finally:
+            with self._question_lock:
+                self._inflight_questions.pop(cle, None)
+            entree["event"].set()
+
+    def _traiter_question_impl(
+        self,
+        question: str,
+        corpus_filtre: Optional[List[str]] = None,
+        k: int = 8
     ) -> ReponseJustifiee:
         """
         Pipeline complet: assertion → reformulation → recherche → génération
         """
-        
+
         # Assertion négative?
         assertion = self.detecter_assertion_negative(question)
         if assertion:
@@ -481,7 +513,7 @@ class RAGEnginev2:
         
         # Rechercher
         corpus_applique = corpus_filtre or reformulation.corpus_presume
-        documents = self.rechercher_documents(question, corpus_applique, k=8)
+        documents = self.rechercher_documents(question, corpus_applique, k=k)
         
         # Générer réponse
         reponse = self.generer_reponse_v2(
@@ -536,18 +568,26 @@ class RAGEnginev2:
         return chunks
 
     def construire_index(self, pdf_path: str):
-        """Construit l'index complet"""
-        st.info("📖 Extraction du PDF...")
-        pages = self.extraire_pdf(pdf_path)
-        st.success(f"✅ {len(pages)} pages")
-        
-        st.info("✂️ Chunking sémantique...")
-        self.chunks = self.chunker_semantique(pages)
-        st.success(f"✅ {len(self.chunks)} chunks")
-        
-        st.info("🔍 Création embeddings...")
-        self.vector_store.construire(self.chunks, self.embedding_model)
-        st.success("✅ Index créé")
+        """
+        Construit l'index complet. Idempotent et thread-safe: si l'index
+        existe déjà (ou est en cours de construction par une autre
+        session/onglet), ne reconstruit rien.
+        """
+        with self._index_lock:
+            if self.vector_store.index is not None:
+                return
+
+            st.info("📖 Extraction du PDF...")
+            pages = self.extraire_pdf(pdf_path)
+            st.success(f"✅ {len(pages)} pages")
+
+            st.info("✂️ Chunking sémantique...")
+            self.chunks = self.chunker_semantique(pages)
+            st.success(f"✅ {len(self.chunks)} chunks")
+
+            st.info("🔍 Création embeddings...")
+            self.vector_store.construire(self.chunks)
+            st.success("✅ Index créé")
 
 
 # =====================================================
@@ -556,16 +596,16 @@ class RAGEnginev2:
 
 class VectorStorev2:
     """Gère l'index FAISS v2"""
-    
-    def __init__(self):
+
+    def __init__(self, embedding_model: SentenceTransformer):
         self.index = None
         self.chunks = []
-        
-    
-    def construire(self, chunks: List[Dict], embedding_model):
+        self.embedding_model = embedding_model
+
+    def construire(self, chunks: List[Dict]):
         """Construit l'index"""
         texts = [c["text"] for c in chunks]
-        vectors = embedding_model.encode(
+        vectors = self.embedding_model.encode(
             texts,
             batch_size=32,
             show_progress_bar=False,
@@ -579,12 +619,12 @@ class VectorStorev2:
         
         faiss.write_index(self.index, "faiss_index_v2.bin")
     
-    def search(self, question: str,embedding_model, k: int = 8) -> List[Dict]:
+    def search(self, question: str, k: int = 8) -> List[Dict]:
         """Recherche les chunks similaires"""
         if self.index is None:
             return []
         
-        query_vector = embedding_model.encode([question], normalize_embeddings=True)
+        query_vector = self.embedding_model.encode([question], normalize_embeddings=True)
         query_vector = np.asarray(query_vector, dtype="float32")
         
         scores, indexes = self.index.search(query_vector, k)
