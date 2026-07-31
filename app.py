@@ -6,6 +6,7 @@ import streamlit as st
 import json
 from pathlib import Path
 from datetime import datetime
+import base64
 
 from rag import get_rag_engine_v2, ComportementAttendu, NiveauNormativite
 from config import (
@@ -474,9 +475,26 @@ if show_jeu_evals:
 # =====================================================
 
 st.divider()
-st.markdown("""
-<p style="text-align: center; color: #999; font-size: 0.9em;">
-🔒 Sécurité Incendie ERP/Habitation/Code du travail | v2.0.0 | 
-© 2026 Legifrance
-</p>
-""", unsafe_allow_html=True)
+
+
+def get_base64_image(image_path):
+    with open(image_path, "rb") as img_file:
+        return base64.b64encode(img_file.read()).decode()
+
+logo1_base64 = get_base64_image("atossa.png")
+logo2_base64 = get_base64_image("rimtech.png")
+
+st.markdown(
+    f"""
+    <div style="text-align: center; padding: 20px;">
+        <div style="display: flex; justify-content: center; align-items: center; gap: 30px; margin-bottom: 10px;">
+            <img src="data:image/png;base64,{logo1_base64}" width="80">
+            <img src="data:image/png;base64,{logo2_base64}" width="80">
+        </div>
+        <p style="color: #999; font-size: 0.9em;">
+        🔒 Sécurité Incendie ERP/Habitation/Code du travail | v2.0.0
+        </p>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
