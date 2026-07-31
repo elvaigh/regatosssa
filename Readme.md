@@ -545,11 +545,11 @@ rag-erp-v2/
 
 ## 📚 Références
 
-- [Notice technique](NOTICE_livrables_v1.md)
-- [Thésaurus JSON](thesaurus_incendie_v1.json)
-- [Jeu référence](jeu_reference_v1.csv)
-- [Jeu adverse](jeu_adverse_v1.csv)
-- [Legifrance](https://www.legifrance.gouv.fr)
+- [Notice technique](reapiatossa/NOTICE_livrables_v1.md)
+- [Thésaurus JSON](reapiatossa/thesaurus_incendie_v1.json)
+- [Jeu référence](reapiatossa/jeu_reference_v1.csv)
+- [Jeu adverse](reapiatossa/jeu_adverse_v1.csv)
+- [Legifrance](reapiatossa/https://www.legifrance.gouv.fr)
 
 ---
 
